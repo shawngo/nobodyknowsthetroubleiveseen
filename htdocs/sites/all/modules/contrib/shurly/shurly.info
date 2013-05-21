@@ -1,0 +1,12 @@
+; $Id: shurly.info,v 1.1 2010/08/17 15:54:55 jjeff Exp $
+name = ShURLy
+package = ShURLy
+description = A complete short URL service.
+dependencies[] = views
+core = 6.x
+; Information added by drupal.org packaging script on 2010-09-07
+version = "6.x-1.0-rc2"
+core = "6.x"
+project = "shurly"
+datestamp = "1283893909"
+

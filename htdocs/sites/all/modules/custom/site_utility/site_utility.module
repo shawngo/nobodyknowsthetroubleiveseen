@@ -1,0 +1,61 @@
+<?php
+
+
+function site_utility_form_alter(&$form, &$form_state, $form_id) {
+
+  if (preg_match('/_node_form$/', $form_id)) {
+    $args = arg();
+    if ($args[0] == 'node' && $args[2] == 'edit') {
+      $node = $form['#node'];
+      $node_type = node_get_types('type', $node);
+      $form['type_fieldset'] = array(
+          '#type' => 'fieldset',
+          '#title' => 'Node Type Information - ' . $node_type->name,
+          '#collapsible' => TRUE,
+          '#collapsed' => TRUE,
+          '#weight' => 40,
+      );
+
+      $form['type_fieldset']['node_type_info'] = array(
+          '#type' => 'markup',
+          '#title' => 'Node Type Information',
+          '#value' => '<strong>' . t($node_type->name) . '</strong> ' . check_markup($node_type->description, 'Full HTML'),
+          '#weight' => 40,
+      );
+      // hawt!
+      drupal_set_title('<em>Edit ' . $node_type->name . '</em>: ' . drupal_get_title());
+    }
+  }
+
+  switch ($form_id) {
+    /**
+     * Fix WYSIWYG form position error with webform nodes
+     */
+    case 'webform_node_form':
+      //Re arrange wysiwyg form field to affect only description
+      $temp = $form['webform']['settings']['confirmation'];
+      unset($form['webform']['settings']['confirmation']);
+      $form['webform']['settings']['confirmation'] = $temp;
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_shurly_redirect_before().
+ */
+function site_utility_shurly_redirect_before(&$row) {
+  /*
+ $row['destination'] = 'http://www.shawngo.com'; 
+  // if we have a non-QR URL, browscap check and redirect to url+qr for mobile
+  mail('shawn@topfloortech.com', 'wmep shurly', '<pre>'. print_r($row, TRUE) .'</pre>');
+  echo '<pre>'. print_r($row, TRUE) .'</pre>';
+  die();
+  exit;
+  
+ return $row;
+*/
+}
+
+function site_utility_init() {
+  
+}

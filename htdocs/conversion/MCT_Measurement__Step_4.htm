@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <meta name="generator" content="Adobe RoboHelp 8" />
+<title>MCT Measurement: Step 4</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+<script type="text/javascript" language="JavaScript">
+//<![CDATA[
+function reDo() {
+  if (innerWidth != origWidth || innerHeight != origHeight)
+     location.reload();
+}
+if ((parseInt(navigator.appVersion) == 4) && (navigator.appName == "Netscape")) {
+	origWidth = innerWidth;
+	origHeight = innerHeight;
+	onresize = reDo;
+}
+onerror = null; 
+//]]>
+</script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+p.WebHelpNavBar { text-align:right; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whtopic.js"></script>
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.gbWhTopic)
+{
+	var strUrl = document.location.href;
+	var bc = 0;
+	var n = strUrl.toLowerCase().indexOf("bc-");
+	if(n != -1)
+	{
+		document.location.href = strUrl.substring(0, n);
+		bc = strUrl.substring(n+3);
+	}
+
+	if (window.setRelStartPage)
+	{
+	addTocInfo("Calculating the MCT Measurement\nMCT Measurement: Step 4");
+addButton("show",BTN_IMG,"Show","","","","",0,0,"whd_show0.gif","whd_show2.gif","whd_show1.gif");
+addButton("hide",BTN_IMG,"Hide","","","","",0,0,"whd_hide0.gif","whd_hide2.gif","whd_hide1.gif");
+
+	}
+
+	document.write("<p style=\"text-align:right\"> ");
+AddMasterBreadcrumbs("Conversion.htm", "", ">", "Home", "Introduction_to_Mapping_and_Conversion.htm");
+document.write("<a href=\"MCT_Measurement__Step_1.htm\">Calculating the MCT Measurement<\/a> > MCT Measurement: Step 4<\/p>");
+
+
+	if (window.setRelStartPage)
+	{
+	setRelStartPage("Conversion.htm");
+
+		autoSync(1);
+		sendSyncInfo();
+		sendAveInfoOut();
+	}
+
+}
+else
+	if (window.gbIE4)
+		document.location.reload();
+//-->
+//]]></script>
+</head>
+
+<body><script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.writeIntopicBar)
+	writeIntopicBar(4);
+//-->
+//]]></script>
+<h1>Calculating the MCT Measurement: Step 4</h1>
+<h2>Raw Procurement</h2>
+<p>Raw procurement time is not always part of the Manufacturing Critical-path 
+ Time, and therefore is not always entered in the Calendar Time Conversion 
+ spreadsheet. &#160;</p>
+<ul type="disc">
+	<li><p style="margin-top: 6pt;">If the Raw Material on Hand <span style="font-weight: bold; 
+	 font-style: italic; text-decoration: underline; "><u><i><b>is</b></i></u></span> sufficient 
+	 for a typical customer order quantity, you <span style="font-style: italic; 
+														 font-weight: bold; 
+														 text-decoration: underline; "><u><i><b>do 
+	 not</b></i></u></span> enter the procurement time. Enter 0 for Raw Material procurement 
+	 Lead Time and go on to line 5, MFG. Cycle Time.</p></li>
+	<li><p style="margin-top: 6pt;">Typical order quantity is best selected 
+	 by reviewing previous orders and selecting a typical quantity. Compare 
+	 that quantity to the amount of raw material on hand.</p></li>
+</ul>
+<p style="margin-top: 6pt; margin-left: 40px;">For example, if your typical 
+ customer order quantity is 1000 pieces, and your Raw Material on hand 
+ is 2800 units, enter the time value (140.8 hours) for line 3. Leave line 
+ 4 as 0 and go to line 5.</p>
+<p style="margin-top: 6pt; margin-left: 40px;"><img src="Graphics/RawProcurementAnnotated.png" alt="RawProcurementAnnotated.png" style="border: none;" width="763" height="344" border="0" /></p>
+<ul type="disc">
+	<li><p style="margin-top: 6pt; margin-left: 0px;">If the Raw Material 
+	 On Hand <span style="font-weight: bold; font-style: italic; text-decoration: underline; "><u><i><b>is 
+	 not</b></i></u></span> sufficient for a typical customer order quantity, enter 
+	 the Raw Procurement Lead Time and Cycle Time (in addition to any Raw 
+	 Material on Hand). &#160;This would include the total time of the 
+	 procurement activities and the supplier lead time in a non-expedited 
+	 disposition.</p></li>
+</ul>
+<p style="margin-top: 6pt; margin-left: 40px;">For example, if your typical 
+ customer order quantity is 1000 pieces, and your Raw Material on hand 
+ is 10 units, enter the time value (.5 hrs) for line 3. Then add the time 
+ for procurement activities and the supplier lead time in line 4. &#160;&#160;In 
+ the example below, you would enter 40 days and 35 minutes (.5 hour wait 
+ and 5 minutes of procurement cycle time and 40 days of supplier lead time.) 
+ &#160;Enter the work hours and work days per week at which the Raw Procurement 
+ activities are factored. Typically the supplier lead time is already in 
+ true calendar time. In this case, enter 24 hours and 7 days for the conversion 
+ factor.</p>
+<p style="margin-top: 6pt; margin-left: 40px;"><img src="Graphics/RawMatlNotSufficientAnnotated.png" alt="RawMatlNotSufficientAnnotated.png" style="border: none;" width="766" height="374" border="0" /></p>
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.writeIntopicBar)
+	writeIntopicBar(0);
+
+highlightSearch();
+//-->
+//]]></script>
+</body>
+</html>

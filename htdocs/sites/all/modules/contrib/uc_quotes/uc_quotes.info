@@ -1,0 +1,14 @@
+; $Id: uc_quotes.info,v 1.1 2009/02/24 01:11:18 jtsnow Exp $
+name = Price Quotes
+description = A module to allow customers to request a quote for products.
+dependencies[] = uc_product
+package = Ubercart - extra
+core = 6.x
+
+
+; Information added by drupal.org packaging script on 2009-02-24
+version = "6.x-1.0"
+core = "6.x"
+project = "uc_quotes"
+datestamp = "1235442346"
+

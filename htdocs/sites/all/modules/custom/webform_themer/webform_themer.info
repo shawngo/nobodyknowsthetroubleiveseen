@@ -1,0 +1,7 @@
+; $Id$
+name = "Webform Themer"
+description = "Adds programmatic theming capabilities to the Webform module"
+core = 6.x
+package = Custom
+
+dependencies[] = webform

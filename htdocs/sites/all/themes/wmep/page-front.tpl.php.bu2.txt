@@ -1,0 +1,276 @@
+<?php
+// $Id: page.tpl.php,v 1.26 2009/11/05 13:54:57 johnalbin Exp $
+
+/**
+* @file
+* Theme implementation to display a single Drupal page.
+*
+* Available variables:
+*
+* General utility variables:
+* - $base_path: The base URL path of the Drupal installation. At the very
+*   least, this will always default to /.
+* - $css: An array of CSS files for the current page.
+* - $directory: The directory the template is located in, e.g. modules/system
+*   or themes/garland.
+* - $is_front: TRUE if the current page is the front page. Used to toggle the mission statement.
+* - $logged_in: TRUE if the user is registered and signed in.
+* - $is_admin: TRUE if the user has permission to access administration pages.
+*
+* Page metadata:
+* - $language: (object) The language the site is being displayed in.
+*   $language->language contains its textual representation.
+*   $language->dir contains the language direction. It will either be 'ltr' or 'rtl'.
+* - $head_title: A modified version of the page title, for use in the TITLE tag.
+* - $head: Markup for the HEAD section (including meta tags, keyword tags, and
+*   so on).
+* - $styles: Style tags necessary to import all CSS files for the page.
+* - $scripts: Script tags necessary to load the JavaScript files and settings
+*   for the page.
+* - $classes: String of classes that can be used to style contextually through
+*   CSS. It should be placed within the <body> tag. When selecting through CSS
+*   it's recommended that you use the body tag, e.g., "body.front". It can be
+*   manipulated through the variable $classes_array from preprocess functions.
+*   The default values can be one or more of the following:
+*   - front: Page is the home page.
+*   - not-front: Page is not the home page.
+*   - logged-in: The current viewer is logged in.
+*   - not-logged-in: The current viewer is not logged in.
+*   - node-type-[node type]: When viewing a single node, the type of that node.
+*     For example, if the node is a "Blog entry" it would result in "node-type-blog".
+*     Note that the machine name will often be in a short form of the human readable label.
+*   The following only apply with the default 'sidebar_first' and 'sidebar_second' block regions:
+*     - two-sidebars: When both sidebars have content.
+*     - no-sidebars: When no sidebar content exists.
+*     - one-sidebar and sidebar-first or sidebar-second: A combination of the
+*       two classes when only one of the two sidebars have content.
+* - $node: Full node object. Contains data that may not be safe. This is only
+*   available if the current page is on the node's primary url.
+*
+* Site identity:
+* - $front_page: The URL of the front page. Use this instead of $base_path,
+*   when linking to the front page. This includes the language domain or prefix.
+* - $logo: The path to the logo image, as defined in theme configuration.
+* - $site_name: The name of the site, empty when display has been disabled
+*   in theme settings.
+* - $site_slogan: The slogan of the site, empty when display has been disabled
+*   in theme settings.
+* - $mission: The text of the site mission, empty when display has been disabled
+*   in theme settings.
+*
+* Navigation:
+* - $search_box: HTML to display the search box, empty if search has been disabled.
+* - $primary_links (array): An array containing the Primary menu links for the
+*   site, if they have been configured.
+* - $secondary_links (array): An array containing the Secondary menu links for
+*   the site, if they have been configured.
+* - $breadcrumb: The breadcrumb trail for the current page.
+*
+* Page content (in order of occurrence in the default page.tpl.php):
+* - $title: The page title, for use in the actual HTML content.
+* - $messages: HTML for status and error messages. Should be displayed prominently.
+* - $tabs: Tabs linking to any sub-pages beneath the current page (e.g., the
+*   view and edit tabs when displaying a node).
+* - $help: Dynamic help text, mostly for admin pages.
+* - $content: The main content of the current page.
+* - $feed_icons: A string of all feed icons for the current page.
+*
+* Footer/closing data:
+* - $footer_message: The footer message as defined in the admin settings.
+* - $closure: Final closing markup from any modules that have altered the page.
+*   This variable should always be output last, after all other dynamic content.
+*
+* Helper variables:
+* - $classes_array: Array of html class attribute values. It is flattened
+*   into a string within the variable $classes.
+*
+* Regions:
+* - $content_top: Items to appear above the main content of the current page.
+* - $content_bottom: Items to appear below the main content of the current page.
+* - $navigation: Items for the navigation bar.
+* - $sidebar: Items for the main sidebar.
+* - $sidebar_inner: Items for the inner sidebar.
+* - $header: Items for the header region.
+* - $footer: Items for the footer region.
+* - $page_closure: Items to appear below the footer.
+*
+* The following variables are deprecated and will be removed in Drupal 7:
+* - $body_classes: This variable has been renamed $classes in Drupal 7.
+*
+* @see template_preprocess()
+* @see template_preprocess_page()
+* @see zen_preprocess()
+* @see zen_process()
+*/
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php print $language->language; ?>" lang="<?php print $language->language; ?>" dir="<?php print $language->dir; ?>">
+
+<head>
+<title><?php print $head_title; ?></title>
+<?php print $head; ?>
+<?php print $styles; ?>
+<?php print $scripts; ?>
+<link type="text/css" rel="stylesheet" media="all" href="/sites/all/themes/wmep/css/front.css" />
+<script type="text/javascript" src="/sites/all/themes/wmep/js/wmep-front.js"></script>
+</head>
+<body class="<?php print $classes; ?>">
+<div id="container">
+	<div id="utility">
+<?php if ($site_slogan): ?>
+		<h3 id="wmep-name"><?php print $site_slogan; ?></h3>
+<?php endif; ?>
+<?php if ($secondary_links): ?>
+		<div id="utilitylinks">
+<?php print theme('links', $secondary_links); ?>
+		</div>
+<?php endif; ?>
+<?php if ($search_box): ?>
+		<div id="search-box"><?php print $search_box; ?></div>
+<?php endif; ?>
+	</div>
+	<div id="container2">
+		<div id="header">
+<?php if ($logo): ?>
+			<div id="logo"><a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"><img src="<?php print $logo; ?>" alt="<?php print $site_name; ?>" /></a></div>
+<?php endif; ?>
+<?php if ($navigation) { ?>
+			<div id="nav">
+<?php print $navigation; ?>
+			</div>
+<?php } ?>
+		</div>
+		<div id="main">
+			<div id="splash">
+<div class="slide" id="splash-main">
+<?php /*
+				<div id="splash-main" class="slide">
+					<div class="slide-text">
+						<h1><strong>Experience.</strong> Results.</h1>
+						<p>WMEP enhances the success of Wisconsin&rsquo;s small to mid-sized manufacturers by providing real-world knowledge in continuous improvement, business strategies and best practices.</p>
+						<p class="more"><a href="<?php print url("node/1536"); ?>">About Next Generation Manufacturing</a></p>
+					</div>
+					<div class="slide-credit">Dalco Metals, <em>Walworth, WI</em></div>
+					<img src="sites/all/themes/wmep/images/splash-delco.jpg" alt="Next Generation Manufacturing" />
+				</div>
+*/
+print $hp_banner1; ?>
+				<div id="splash-cfi-slide" class="slide">
+<?php print $hp_banner2; ?>
+				<div id="splash-sci-slide" class="slide">
+<?php print $hp_banner3; ?>
+				<div id="splash-atm-slide" class="slide">
+<?php print $hp_banner4; ?>
+				<div id="splash-ge-slide" class="slide">
+<?php print $hp_banner5; ?>
+				<div id="splash-eem-slide" class="slide">
+<?php print $hp_banner6; ?>
+				<div id="splash-sppd-slide" class="slide">
+<?php print $hp_banner7; ?>
+<!--
+				<div id="splash-cfi-slide" class="slide">
+					<div class="slide-text">
+						<h1><strong>Customer Focused</strong> Innovation</h1>
+						<p class="more"><a href="<?php print url("node/1545"); ?>">Customer Focused Innovation</a></p>
+					</div>
+					<div class="slide-credit">Dalco Metals, <em>Walworth, WI</em></div>
+					<img src="sites/all/themes/wmep/images/splash-sci.jpg" alt="Next Generation Manufacturing" />
+				</div>
+				<div id="splash-sci-slide" class="slide">
+					<div class="slide-text">
+						<h1><strong>Systemic Continuous</strong> Improvement</h1>
+						<p class="more"><a href="<?php print url("node/1546"); ?>">About Systemic Continuous Improvement</a></p>
+					</div>
+					<div class="slide-credit">Dalco Metals, <em>Walworth, WI</em></div>
+					<img src="sites/all/themes/wmep/images/splash-sci.jpg" alt="Next Generation Manufacturing" />
+				</div>
+				<div id="splash-atm-slide" class="slide">
+					<div class="slide-text">
+						<h1><strong>Advanced Talent</strong> Management</h1>
+						<p class="more"><a href="<?php print url("node/1547"); ?>">About Advanced Talent Management</a></p>
+					</div>
+					<div class="slide-credit">Dalco Metals, <em>Walworth, WI</em></div>
+					<img src="sites/all/themes/wmep/images/splash-sci.jpg" alt="Next Generation Manufacturing" />
+				</div>
+				<div id="splash-ge-slide" class="slide">
+					<div class="slide-text">
+						<h1><strong>Global</strong> Engagement</h1>
+						<p class="more"><a href="<?php print url("node/1548"); ?>">About Global Engagement</a></p>
+					</div>
+					<div class="slide-credit">Dalco Metals, <em>Walworth, WI</em></div>
+					<img src="sites/all/themes/wmep/images/splash-sci.jpg" alt="Next Generation Manufacturing" />
+				</div>
+				<div id="splash-eem-slide" class="slide">
+					<div class="slide-text">
+						<h1><strong>Extended Enterprise</strong> Management</h1>
+						<p class="more"><a href="<?php print url("node/1549"); ?>">About Extended Enterprise Management</a></p>
+					</div>
+					<div class="slide-credit">Dalco Metals, <em>Walworth, WI</em></div>
+					<img src="sites/all/themes/wmep/images/splash-sci.jpg" alt="Next Generation Manufacturing" />
+				</div>
+				<div id="splash-sppd-slide" class="slide">
+					<div class="slide-text">
+						<h1><strong>Sustainable Products</strong> &amp; Process Development</h1>
+						<p class="more"><a href="<?php print url("node/1550"); ?>">About Sustainable Products &amp; Process Development</a></p>
+					</div>
+					<div class="slide-credit">Dalco Metals, <em>Walworth, WI</em></div>
+					<img src="sites/all/themes/wmep/images/splash-sci.jpg" alt="Next Generation Manufacturing" />
+				</div>
+-->
+				<ul id="splash-nav">
+					<li id="splash-cfi"><a href="<?php print url("node/1545"); ?>"><strong>Customer Focused</strong><br />Innovation</a></li>
+					<li id="splash-sci"><a href="<?php print url("node/1546"); ?>"><strong>Systemic Continuous</strong><br />Improvement</a></li>
+					<li id="splash-atm"><a href="<?php print url("node/1547"); ?>"><strong>Advanced Talent</strong><br />Management</a></li>
+					<li id="splash-ge"><a href="<?php print url("node/1548"); ?>"><strong>Global</strong><br />Engagement</a></li>
+					<li id="splash-eem"><a href="<?php print url("node/1549"); ?>"><strong>Extended Enterprise</strong><br />Management</a></li>
+					<li id="splash-sppd"><a href="<?php print url("node/1550"); ?>"><strong>Sustainable Products</strong><br />&amp; Process Development</a></li>
+				</ul>
+			</div>
+	
+			<div id="row2">
+	<?php if ($tabs): ?>
+	<!--			<div class="tabs"><?php print $tabs; ?></div> -->
+	<?php endif; ?>
+	
+				<div id="banners">
+					<div id="banner1"><?php print $banner1; ?></div>
+					<div id="banner2"><?php print $banner2; ?></div>
+					<div id="banner3"><?php print $banner3; ?></div>
+				</div>
+				
+				<div id="teaser-events" class="teaser">
+					<h2><strong>Events</strong> &amp; Workshops</h2>
+	<?php print $teaser_events; ?>
+					<p class="more"><a href="events/wmep">More Events</a></p>
+				</div>
+				<div id="teaser-news" class="teaser">
+					<h2><strong>News</strong></h2>
+	<?php print $teaser_news; ?>
+					<p class="more"><a href="news">More News</a></p>
+				</div>
+			</div>
+		</div>
+<?php print $highlight; ?>
+<?php print $messages; ?>
+<?php print $help; ?>
+	</div>
+</div>
+<div id="footer">
+	<div id="footer-content">
+		<h5>Wisconsin Manufacturing Extension Partnership</h5>
+		<p>2601 Crossroads Drive | Suite 145 | Madison, WI 53718</p>
+		<p><strong>Experience.</strong> Results. | Contact us at 877-800-2085</p>
+	</div>
+	<div id="footer-sitemap">
+<?php if ($footer_links): ?>
+		<div><?php print $footer_links; ?></div>
+<?php endif; ?>
+		<p>Copyright &copy; 2010 WMEP</p>
+		<p><a href="http://www.topfloortech.com/">Website Design</a> by Top Floor Technologies</p>
+	</div>
+</div>
+<?php print $page_closure; ?>
+<?php print $closure; ?>
+
+</body>
+</html>

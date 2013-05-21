@@ -1,0 +1,97 @@
+
+  /**
+   * Constructor; calls to base object constructor.
+   */
+  function views_handler_field_views_compare($click_sortable = FALSE, $additional_fields = array()) {
+    parent::views_handler_field($click_sortable, $additional_fields);
+  }
+
+  /**
+   * Define options available for this field.
+   */
+  function option_definition() {
+    $options = parent::option_definition();
+
+    $options['views_compare'] = array('default' => '');
+    //$options['link_to_taxonomy'] = array('default' => FALSE);
+
+    return $options;
+  }
+
+
+  /**
+   * Build option configuration form.
+   */
+  function options_form(&$form, &$form_state) {
+    parent::options_form($form, $form_state);
+
+    $form['views_compare'] = array(
+      '#title' => t('Link this image to its term page'),
+      '#type' => 'checkbox',
+      '#default_value' => !empty($this->options['link_to_taxonomy']),
+    );
+
+/*    // If ImageCache module is found, add its presets as available options
+    // for how to display the image.
+    if (module_exists('imagecache')) {
+      $raw_presets = imagecache_presets();
+      $presets[''] = t('Default');
+      foreach ($raw_presets as $preset_id => $preset_info) {
+        $preset = $preset_info['presetname'];
+        $presets[$preset] = $preset;
+      }
+      $form['imagecache_preset'] = array(
+        '#type' => 'select',
+        '#title' => t('ImageCache preset'),
+        '#options' => $presets,
+        '#default_value' => $this->options['imagecache_preset'],
+      );
+    }*/
+  }
+
+
+  function query() {
+    $this->ensure_my_table();
+    $this->add_additional_fields();
+  }
+
+  function element_type() {
+    if (isset($this->definition['element type'])) {
+      return $this->definition['element type'];
+    }
+    return 'div';
+  }
+
+
+  /**
+   * Render field output to the browser.
+   */
+  function render($values) {
+    $image = '';
+
+    // Render image. If ImageCache preset is specified, use it.
+    if ($this->options['views_compare']) {
+      $image = 'compare me'; //taxonomy_image_display($values->tid, NULL, $this->options['imagecache_preset']);
+    }
+    else {
+      $image = 'compare you'; //taxonomy_image_display($values->tid);
+    }
+
+    // Output image as a link, if option is set.
+    if ($this->options['views_compare']) {
+      $image = 'compare i'; //l($image, taxonomy_term_path(taxonomy_get_term($values->tid)), array('html' => TRUE));
+    }
+
+    return $image;
+  }
+
+  function render_BU($values) {
+/*
+    $product = node_load($values->{$this->aliases['nid']});
+    if (uc_product_is_product($product)) {
+      return drupal_get_form('uc_catalog_buy_it_now_form_'. $values->{$this->aliases['nid']}, $product);
+    }
+  }
+*/
+    return 'views_compare';
+  }

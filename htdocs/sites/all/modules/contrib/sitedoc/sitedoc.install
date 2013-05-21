@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function sitedoc_uninstall() {
+// Delete system variables 
+  variable_del('sitedoc_settings');
+}
+
+/**
+ * Implementation of hook_update_N().
+ * Check file system.
+ */
+function sitedoc_update_6000() {
+  $ret = array();
+  
+  // Do we have a public file system?
+  if (variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC) == FILE_DOWNLOADS_PUBLIC) {
+    // Get the module settings and verify they've been set.
+    $sitedoc_settings = variable_get('sitedoc_settings', array());
+    // If set up for manual run, then we're already ok.
+    if (isset($sitedoc_settings['archive_frequency']) && $sitedoc_settings['archive_frequency'] > 0) {
+      $sitedoc_settings['archive_frequency'] = 0;
+      variable_set('sitedoc_settings', $sitedoc_settings);
+      $ret[] = array('success' => FALSE, 'query' => t('Sitedoc archive requires a private file system.'));
+    }    
+  }
+  
+  return $ret;
+}

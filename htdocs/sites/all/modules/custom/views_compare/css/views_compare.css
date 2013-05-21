@@ -1,0 +1,4 @@
+#view-id-product_list_test-page_1 .views-row {clear: both;}
+.views-field-compare label {display: none;}
+.views-field-compare form .form-item {width: 125px;}
+.views-field-compare form .list-views-compare {margin-top: 10px;}

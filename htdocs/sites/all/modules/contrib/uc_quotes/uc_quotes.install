@@ -1,0 +1,47 @@
+<?php
+// $Id: uc_quotes.install,v 1.1 2009/02/24 01:11:18 jtsnow Exp $
+
+/**
+ * @file
+ * Database installation, uninstallation, and updates for the UC Quotes module.
+ */
+
+/**
+ * Ubercart uc_quotes.module schema
+ */
+function uc_quotes_schema() {
+  $schema = array();
+
+  $schema['uc_quotes'] = array(
+    'description' => t('Settings for quotable products.'),
+    'fields' => array(
+      'pfid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'quote' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('pfid'),
+  );
+  return $schema;
+}
+
+function uc_quotes_install() {
+  drupal_install_schema('uc_quotes');
+}
+
+function uc_quotes_uninstall() {
+  drupal_uninstall_schema('uc_quotes');
+}

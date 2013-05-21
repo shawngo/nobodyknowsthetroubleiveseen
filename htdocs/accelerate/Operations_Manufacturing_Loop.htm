@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <meta name="generator" content="Adobe RoboHelp 8" />
+<title>Operations Manufacturing Loop</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+<script type="text/javascript" language="JavaScript">
+//<![CDATA[
+function reDo() {
+  if (innerWidth != origWidth || innerHeight != origHeight)
+     location.reload();
+}
+if ((parseInt(navigator.appVersion) == 4) && (navigator.appName == "Netscape")) {
+	origWidth = innerWidth;
+	origHeight = innerHeight;
+	onresize = reDo;
+}
+onerror = null; 
+//]]>
+</script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whtopic.js"></script>
+
+</head>
+
+<body><script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.gbWhTopic)
+{
+	var strUrl = document.location.href;
+	var bc = 0;
+	var n = strUrl.toLowerCase().indexOf("bc-");
+	if(n != -1)
+	{
+		document.location.href = strUrl.substring(0, n);
+		bc = strUrl.substring(n+3);
+	}
+
+	if (window.addTocInfo)
+	{
+	addTocInfo("Value Stream Mapping and Calendar Time Conversion\nPreparing the Value Stream Map for MCT Conversion\nOperations Manufacturing Loop");
+addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
+
+	}
+	if (window.writeBtnStyle)
+		writeBtnStyle();
+
+	if (window.writeIntopicBar)
+		writeIntopicBar(1);
+
+	
+	document.write("<p style=\"text-align:right\"> ");
+AddMasterBreadcrumbs("Accelerate.htm", "", ">", "Home", "Welcome.htm");
+document.write("<a href=\"Introduction_to_Mapping_and_Conversion.htm\">Value Stream Mapping and Calendar Time Conversion<\/a> > <a href=\"Conversion_Overview.htm\">Preparing the Value Stream Map for MCT Conversion<\/a> > Operations Manufacturing Loop<\/p>");
+
+
+	if (window.setRelStartPage)
+	{
+	setRelStartPage("Accelerate.htm");
+
+		autoSync(1);
+		sendSyncInfo();
+		sendAveInfoOut();
+	}
+}
+else
+	if (window.gbIE4)
+		document.location.reload();
+
+//-->
+//]]></script>
+<h1>Operations Manufacturing Loop</h1>
+<p style="margin-top: 6pt;">The Operations Manufacturing Loop includes 
+ all non-value and value-added activity from the Raw Material loop through 
+ the critical production path until a finished product has been produced. 
+ This includes:</p>
+<ul type="disc">
+	<li><p style="margin-top: 6pt;">The production schedule queue</p></li>
+	<li><p style="margin-top: 6pt;">The cycle time for all the production 
+	 steps, as well as the change over times</p></li>
+	<li><p style="margin-top: 6pt;">The batch wait times</p></li>
+	<li><p style="margin-top: 6pt;">The time represented by the Work in 
+	 Process Inventory (WIP)</p></li>
+	<li><p style="margin-top: 6pt;">The queue time waiting on shared resources</p></li>
+</ul>
+<p style="margin-top: 6pt;">The Operations Manufacturing Loop does not 
+ include packing, shipping or finished goods inventory.</p>
+<p style="margin-top: 6pt;">&#160;</p>
+<p style="margin-top: 6pt;"><img src="Graphics/OpsManufacturingGraphic.png" alt="OpsManufacturingGraphic.png" style="border: none;" width="1180" height="389" border="0" /></p>
+<p style="margin-top: 6pt;">&#160;</p>
+<h2>Determine the Critical Path of Production<img src="Graphics/CriticalPath.png" alt="CriticalPath.png" style="border: none;" width="660" height="719" align="right" border="0" /></h2>
+<p>If more than one production path exists, the critical path is the path 
+ with the longest lead time.</p>
+<p>&#160;</p>
+<p>In the example provided here, Spot Weld 1 and 2 are running in parallel 
+ and both feed into Assembly 1. Spot Weld 2 has 28.8 hours of WIP and a 
+ .75 minute cycle time, whereas Spot Weld 1 has 121.5 hours of WIP and 
+ a .6 minute cycle time. Spot Weld 1 is the longest path and thus the critical 
+ path.</p>
+<h2>&#160;</h2>
+<h2>&#160;</h2>
+<h2>&#160;</h2>
+<h2>&#160;</h2>
+<h2>&#160;</h2>
+<h2>&#160;</h2>
+<h2>&#160;</h2>
+<h2>&#160;</h2>
+<h2>&#160;</h2>
+<h2>&#160;</h2>
+<h2>&#160;</h2>
+<p>&#160;</p>
+<h2>Operations Manufacturing Summary Table Calculations<img src="Graphics/OpsMfgSummaryTable.png" alt="OpsMfgSummaryTable.png" style="border: none;" width="226" height="405" align="right" border="0" /></h2>
+<p style="margin-top: 6pt;">This section provides an explanation of the 
+ components that make up the Operations Manufacturing Summary table.</p>
+<ul type="disc">
+	<li><p style="margin-top: 6pt;"><span style="font-weight: bold;"><b>Lead 
+	 Time:</b></span> &#160;Total of all NVA (non-value add) activity in the 
+	 critical production path, including Raw Material Inventory, and the 
+	 WIP and Queue between production steps, through the completing of 
+	 a finished product. &#160;This is a standard VSM measurement.</p></li>
+	<li><p style="margin-top: 6pt;"><span style="font-weight: bold;"><b>Cycle 
+	 Time:</b></span> &#160;Total of all the Cycle Time in the critical production 
+	 path. This is also a standard VSM measurement.</p></li>
+	<li><p style="margin-top: 6pt;"><span style="font-weight: bold;"><b>Changeover 
+	 Time:</b></span> Total of all the change over time in the critical production 
+	 path.</p></li>
+	<li><p style="margin-top: 6pt;"><span style="font-weight: bold;"><b>Batch 
+	 Wait Time:</b></span> &#160;For each production step, multiply the number 
+	 of units in the transfer batch size minus 1 times the cycle time for 
+	 that step to get the batch wait time for this step. </p></li>
+</ul>
+<p style="margin-top: 6pt; margin-left: 40px;">Example: Transfer batch 
+ of 200-1=199 x .05 min= Batch wait of 9.95 minutes.</p>
+<p style="margin-top: 6pt; margin-left: 40px;">To get the total Batch Wait 
+ Time, add the batch wait time for each step to get the total batch wait 
+ time for the critical production path.</p>
+<ul type="disc">
+	<li><p style="margin-top: 6pt;"><span style="font-weight: bold;"><b>W.I.P.:</b></span> 
+	 Add the total of the manufacturing non-value add values that are due 
+	 to WIP in the production loop. </p></li>
+	<li><p style="margin-top: 6pt;"><span style="font-weight: bold;"><b>Queue:</b></span> 
+	 Add the total of the manufacturing non-value add values that are due 
+	 to Queue times in the production loop.</p></li>
+	<li><p style="margin-top: 6pt;"><span style="font-weight: bold;"><b>1st 
+	 Pass Quality Yield:</b></span> &#160;Multiply all the 1st Pass Yield measurements 
+	 for all the production steps.</p></li>
+</ul>
+<p style="margin-top: 6pt; margin-left: 40px;">Example: 96% x &#160;85% 
+ x 100% x 100% x 50% = 40.8% 1st Pass Yield.</p>
+<p style="margin-top: 6pt; margin-left: 40px;">This gives you the overall 
+ percentage of parts that go through the value stream without defects, 
+ scrap, or rework on the first pass.</p>
+<ul type="disc">
+	<li><p style="margin-top: 6pt;"><span style="font-weight: bold;"><b>Machine 
+	 Reliability:</b></span> &#160;Multiply all the machine reliability measurements 
+	 for all the production steps in the same manner as 1st Pass Quality 
+	 Yield. &#160;&#160;This gives you the total percent of time that all 
+	 machines required for this value stream are in proper working order.</p></li>
+	<li><p style="margin-top: 6pt;"><span style="font-weight: bold;"><b>Travel 
+	 Distance:</b></span> Add the distance traveled (in feet) by the material 
+	 from Raw Material to Finished Goods.</p></li>
+</ul>
+<h2>VSM Production Timeline</h2>
+<p style="margin-top: 6pt;">The non-value add values in the VSM production 
+ timeline are made up of WIP and Queue Time. Do not include raw material, 
+ kitted material, or finished goods inventory in WIP or Queue totals since 
+ they are included in their respective categories.</p>
+<p style="margin-top: 6pt;"><img src="Graphics/VSMProductionTimeline.png" alt="VSMProductionTimeline.png" style="border: none;" width="748" height="54" border="0" /></p>
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.writeIntopicBar)
+	writeIntopicBar(0);
+
+
+highlightSearch();
+//-->
+//]]></script>
+</body>
+</html>

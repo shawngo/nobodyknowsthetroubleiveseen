@@ -1,0 +1,60 @@
+<?php
+// $Id: shurly_service.install,v 1.1.2.3 2010/08/30 13:12:12 jjeff Exp $
+
+/**
+ * Implement hook_schema().
+ */
+function shurly_service_schema() {
+  $schema['shurly_keys'] = array(
+    'description' => t('API keys for use with the Shurly module'),
+    'fields' => array(
+      'uid' => array(
+        'description' => t('User ID'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'apikey' => array(
+        'description' => t('API key for user'),
+        'type' => 'varchar',
+        'length' => '35',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('apikey'),
+    'indexes' => array(
+      'uid' => array('uid'),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * Implement hook_install().
+ */
+function shurly_service_install() {
+  drupal_install_schema('shurly_service');
+}
+
+
+function shurly_service_update_6100() {
+  $module = 'shurly_service';
+  $schema = drupal_get_schema_unprocessed($module);
+  _drupal_initialize_schema($module, $schema);
+  
+  $ret = array();
+  db_create_table($ret, 'shurly_keys', $schema['shurly_keys']);
+  
+  return $ret;
+}
+
+/**
+ * Implement hook_uninstall().
+ */
+function shurly_service_uninstall() {
+  // Remove tables.
+  drupal_uninstall_schema('shurly_service');
+
+  // No variables to remove
+  
+  
+}

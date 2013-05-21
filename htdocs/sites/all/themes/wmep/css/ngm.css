@@ -1,0 +1,32 @@
+/* CSS Document */
+
+#ngm { background: url(../images/ngm-splash-bg.jpg) right bottom no-repeat; border: 1px solid #c5d7de; -webkit-border-top-left-radius: 8px; -webkit-border-bottom-right-radius: 8px; -moz-border-radius-topleft: 8px; -moz-border-radius-bottomright: 8px; border-top-left-radius: 8px; border-bottom-right-radius: 8px; min-height: 319px; }
+	* html #ngm { height: 319px; }
+	#ngm:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+	#ngm-links { width: 249px; margin: 0; padding: 0; float: left; }
+		#ngm-links li { background: #e2ebee; border-bottom: 1px solid #fff; float: left; margin: 0; padding: 0; }
+			#ngm-links li a { background-image: none; background-position: 15px 10px; background-repeat: no-repeat; display: block; line-height: 1.3em; padding: 10px 15px 10px 60px; height: 34px; width: 164px; }
+				#ngm-links li a:link, #ngm-links li a:visited, 
+				#ngm-links li a:hover, #ngm-links li a:active { text-decoration: none; color: #313739; }
+				#ngm-links li a strong { display: block; text-transform: uppercase; color: #006e91; letter-spacing: -1px; }
+			#ngm-links li.active { background: #e2ebee url(../images/ngm-active-bg.gif) 100% 0 repeat-y; }
+		#ngm-links #ngm-cfi { -webkit-border-top-left-radius: 7px; -moz-border-radius-topleft: 7px; border-top-left-radius: 7px; }
+			#ngm-links #ngm-cfi a { background-image: url(../images/ngm-icon-cfi-small.gif); }
+		#ngm-links #ngm-sci { }
+			#ngm-links #ngm-sci a { background-image: url(../images/ngm-icon-sci-small.gif); }
+		#ngm-links #ngm-atm { }
+			#ngm-links #ngm-atm a { background-image: url(../images/ngm-icon-atm-small.gif); }
+		#ngm-links #ngm-ge { }
+			#ngm-links #ngm-ge a { background-image: url(../images/ngm-icon-ge-small.gif); }
+		#ngm-links #ngm-eem { }
+			#ngm-links #ngm-eem a { background-image: url(../images/ngm-icon-eem-small.gif); }
+		#ngm-links #ngm-sppd { border-bottom: none; }
+			#ngm-links #ngm-sppd a { background-image: url(../images/ngm-icon-sppd-small.gif); }
+
+	#ngm-splash { width: 480px; float: right; position: relative; }
+		#ngm-splash .ngm-slide { padding: 15px 15px 15px 5px; line-height: 18px; }
+			.js-enabled #ngm-splash .ngm-slide { position: absolute; right: 0; top: 0; }
+			#ngm-splash .ngm-slide img { float: right; }
+			#ngm-splash .ngm-slide h2 { border: none; margin-top: 0; }
+			#ngm-splash .ngm-slide .more { margin-top: 0; }
+				#ngm-splash .ngm-slide .more a { padding: 0 10px; }

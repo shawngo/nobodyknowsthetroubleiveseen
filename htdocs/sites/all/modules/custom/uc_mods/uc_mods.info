@@ -1,0 +1,5 @@
+; $Id$
+name = Ubercart Mods
+description = Modify some Ubercart details
+core = 6.x
+package = Ubercart Mods

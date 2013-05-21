@@ -1,0 +1,10 @@
+; $Id$
+name = Job Application
+description = A module that creates links to a webform application form
+dependencies[] = webform
+package = Top Floor Modules
+core = 6.x
+php = 5.0
+
+version = "6.x-0.1-dev"
+core = "6.x"

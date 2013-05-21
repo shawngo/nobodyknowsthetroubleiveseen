@@ -1,0 +1,6 @@
+; $Id$
+name = "Views Compare"
+description = "Adds Compare Item checkbox to a view"
+core = 6.x
+package = Views
+dependencies[] = views

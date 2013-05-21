@@ -1,0 +1,37 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<tocdata>
+<item name="Introduction to Mapping and Conversion" url="Introduction_to_Mapping_and_Conversion.htm" />
+<book name="Preparing the Value Stream Map for MCT Conversion" >
+  <item name="Conversion Overview" url="Conversion_Overview.htm" />
+  <item name="Operations Planning Loop" url="Operations_Planning_Loop.htm" />
+  <item name="Raw Material Loop" url="Raw_Material_Loop.htm" />
+  <item name="Operations Manufacturing Loop" url="Operations_Manufacturing_Loop.htm" />
+  <item name="Logistics Loop" url="Logistics_Loop.htm" />
+  <item name="Contingency Inventory Loop" url="Contingency_Inventory_Loop.htm" />
+</book>
+<book name="Calculating the MCT Measurement" >
+  <item name="MCT Measurement: Step 1" url="MCT_Measurement__Step_1.htm" />
+  <item name="MCT Measurement: Steps 2 and 3" url="MCT_Measurement__Steps_2_and_3.htm" />
+  <item name="MCT Measurement: Step 4" url="MCT_Measurement__Step_4.htm" />
+  <item name="MCT Measurement: Step 5" url="MCT_Measurement__Step_5.htm" />
+  <item name="MCT Measurement: Steps 7 - 9" url="MCT_Measurement__Steps_6_-_9.htm" />
+  <item name="MCT Measurement: Step 10" url="MCT_Measurement__Step_10.htm" />
+  <item name="MCT Measurement: Steps 11 and 12" url="MCT_Measurement__Steps_11_and_12.htm" />
+  <item name="MCT Measurement: Steps 13 and 14" url="MCT_Measurement__Steps_13_and_14.htm" />
+</book>
+<book name="Calendar Time Calculations" >
+  <item name="Calendar Time Calculations" url="Calendar_Time_Calculations.htm" />
+</book>
+<book name="Frequently Asked Questions" >
+  <item name="FAQ1" url="FAQ1.htm" />
+  <item name="FAQ2" url="FAQ2.htm" />
+  <item name="FAQ3" url="FAQ3.htm" />
+  <item name="FAQ4" url="FAQ4.htm" />
+</book>
+<book name="Samples" >
+  <item name="Sample Value Stream Map" url="Sample_Value_Stream_Map.htm" />
+  <item name="Sample Summary Boxes" url="Sample_Summary_Boxes.htm" />
+  <item name="Sample Calendar Time Conversion Sheet" url="Sample_Calendar_Time_Conversion_Sheet.htm" />
+</book>
+
+</tocdata>

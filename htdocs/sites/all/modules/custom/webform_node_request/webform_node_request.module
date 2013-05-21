@@ -1,0 +1,113 @@
+<?php
+// $Id$
+/**
+ * @file
+ * Webform Node Request Module file
+ *
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function webform_node_request_menu() {
+  $items = array();
+  $items['admin/settings/webform_node_request'] = array(
+    'title' => 'Webform Node Request settings',
+    'description' => 'Webform Node Request Settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('webform_node_request_admin_settings_form'),
+    'file' => 'webform_node_request.admin.inc',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $items;
+}
+
+/**
+ * Implementation of hook_nodeapi()
+ */
+function webform_node_request_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  // @TODO change this to something configurable and in the $links var?
+  switch($op) {
+    case 'view':
+      if($node->type == 'product') {
+        $nid = arg(1);
+        //$node->content['body']['#value'] .= '<ul class="links inline"><li class="ask_a_question first last">'. l('Ask A Question', variable_get('webform_node_request_form', 'node/1'), array('query' => array('nid' => $nid))) .'</li></ul>';
+        
+        $node->ask_a_question .= '<ul class="links inline"><li class="ask_a_question first last">'. l('Ask A Question', variable_get('webform_node_request_form', 'node/1'), array('query' => array('nid' => $nid))) .'</li></ul>';
+
+
+        $webform_node_request_apply_other = trim(variable_get('webform_node_request_apply_other', ''));
+        if($webform_node_request_apply_other) {
+          $node->content['body']['#value'] .= $webform_node_request_apply_other;          
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function webform_node_request_form_alter(&$form, $form_state, $form_id) {
+  // this is the form that will be used for the request
+  // @TODO provide a more dynamic approach - select which nodes use which forms? by content type? tax? etc
+  $webform_node_request_form_nid = variable_get('webform_node_request_form', 1);
+
+  // @TODO - change this to only expect a nid rather than a textfield
+  $webform_node_request_form_nid = str_replace('node/', '', $webform_node_request_form_nid);
+
+/* //
+echo '<h1>'. $webform_node_request_form_nid .': '. $form['#parameters'][2]->nid .' -- '. $form_id .'</h1>';
+
+echo (substr($form_id, 0, 20) == 'webform_client_form_') ? "<h1>substr pass</h1>" : "<h1>substr fail</h1>";
+
+echo (isset($form['#parameters'][2]->nid)) ? "<h1>isset nid pass</h1>" : "<h1>isset nid fail</h1>";
+
+echo ($form['#parameters'][2]->nid == $webform_node_request_form_nid) ? "<h1>== pass</h1>" : "<h1>== fail -- params[2]-nid: ". $form['#parameters'][2]->nid .' wnrf_nid: '. $webform_node_request_form_nid .'</h1>';
+// */
+  // check for webform form being viewed and attach dependency flags
+  if (substr($form_id, 0, 20) == 'webform_client_form_' && isset($form['#parameters'][2]->nid) && $form['#parameters'][2]->nid == $webform_node_request_form_nid) {
+    $webform_node_request_nid = webform_node_request_get_nid();
+
+    if ($webform_node_request_nid > 0) {
+      // add our node request specific fields and update the action in case validation fails
+      $node = node_load($webform_node_request_nid);
+      if($node) {
+
+       drupal_set_title("Ask A Question About ". t($node->title));
+
+       $form['submitted']['webform_node_request'] = array(
+         '#type' => 'fieldset',
+         '#title' => 'Information Request For:',
+         '#weight' => 0.001,
+       );
+       $form['submitted']['webform_node_request']['title'] = array(
+         '#value' => '<p><strong>'. $node->title .'</strong></p>',
+         '#weight' => 0.0001,
+       );
+      }
+      $form['#action'] = '/' . variable_get('webform_node_request_form', 'node/1') . '?nid=' . $webform_node_request_nid;
+    }
+  }
+}
+
+/**
+ * Utility function to find the referenced node id
+ *
+ * @return int Node ID of requesting node
+ */
+function webform_node_request_get_nid() {
+  // handles the ?nid=# case //
+  if(isset($_GET['nid'])) {
+    return (int) $_GET['nid'];
+  }
+  // handles the /nid123 case (which may never happen but I'll leave it in here for filler //
+  foreach(arg() as $arg) {
+    if(strstr($arg, 'nid')) {
+      $start = strpos($arg, 'nid');
+      return substr($arg, $start+3);
+    }
+  }
+}

@@ -1,0 +1,11 @@
+; $Id$
+name = 	Path redirect import
+description = Provides the ability to import path for Path Redirect
+core = 6.x
+dependencies[] = path_redirect
+; Information added by drupal.org packaging script on 2012-02-27
+version = "6.x-1.0-alpha1"
+core = "6.x"
+project = "path_redirect_import"
+datestamp = "1330329346"
+

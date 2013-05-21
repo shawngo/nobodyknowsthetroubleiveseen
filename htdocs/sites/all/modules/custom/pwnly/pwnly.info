@@ -1,0 +1,8 @@
+; $Id$
+name = Password only setion
+description = A module that allows users access with only a password
+core = 6.x
+package = Custom
+
+version = "6.x-0.2-dev"
+

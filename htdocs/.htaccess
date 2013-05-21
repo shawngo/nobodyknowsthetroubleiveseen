@@ -1,0 +1,278 @@
+#
+# Apache/PHP/Drupal settings:
+#
+
+# Protect files and directories from prying eyes.
+<FilesMatch "\.(engine|inc|info|install|module|profile|test|po|sh|.*sql|theme|tpl(\.php)?|xtmpl|svn-base)$|^(code-style\.pl|Entries.*|Repository|Root|Tag|Template|all-wcprops|entries|format)$">
+  Order allow,deny
+</FilesMatch>
+
+# Don't show directory listings for URLs which map to a directory.
+Options -Indexes
+
+# Follow symbolic links in this directory.
+Options +FollowSymLinks
+
+# Make Drupal handle any 404 errors.
+ErrorDocument 404 /index.php
+
+
+
+
+# Performance what?
+php_value memory_limit 256M
+php_value upload_max_filesize 1000M
+php_value post_max_size 1000M
+php_value max_execution_time 60
+
+
+# Force simple error message for requests for non-existent favicon.ico.
+<Files favicon.ico>
+  # There is no end quote below, for compatibility with Apache 1.3.
+  ErrorDocument 404 "The requested file favicon.ico was not found."
+</Files>
+
+# Set the default handler.
+DirectoryIndex index.php
+
+# Override PHP settings. More in sites/default/settings.php
+# but the following cannot be changed at runtime.
+
+# PHP 4, Apache 1.
+<IfModule mod_php4.c>
+  php_value magic_quotes_gpc                0
+  php_value register_globals                0
+  php_value session.auto_start              0
+  php_value mbstring.http_input             pass
+  php_value mbstring.http_output            pass
+  php_value mbstring.encoding_translation   0
+</IfModule>
+
+# PHP 4, Apache 2.
+<IfModule sapi_apache2.c>
+  php_value magic_quotes_gpc                0
+  php_value register_globals                0
+  php_value session.auto_start              0
+  php_value mbstring.http_input             pass
+  php_value mbstring.http_output            pass
+  php_value mbstring.encoding_translation   0
+</IfModule>
+
+# PHP 5, Apache 1 and 2.
+<IfModule mod_php5.c>
+  php_value magic_quotes_gpc                0
+  php_value register_globals                0
+  php_value session.auto_start              0
+  php_value mbstring.http_input             pass
+  php_value mbstring.http_output            pass
+  php_value mbstring.encoding_translation   0
+</IfModule>
+
+# Requires mod_expires to be enabled.
+<IfModule mod_expires.c>
+  # Enable expirations.
+  ExpiresActive On
+
+  # Cache all files for 2 weeks after access (A).
+  ExpiresDefault A1209600
+
+  # Do not cache dynamically generated pages.
+  ExpiresByType text/html A1
+</IfModule>
+
+# Various rewrite rules.
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+
+  # If your site can be accessed both with and without the 'www.' prefix, you
+  # can use one of the following settings to redirect users to your preferred
+  # URL, either WITH or WITHOUT the 'www.' prefix. Choose ONLY one option:
+  #
+  # To redirect all users to access the site WITH the 'www.' prefix,
+  # (http://example.com/... will be redirected to http://www.example.com/...)
+  # adapt and uncomment the following:
+  RewriteCond %{HTTP_HOST} ^wmep\.org$ [NC]
+  RewriteRule ^(.*)$ http://www.wmep.org/$1 [L,R=301]
+  #
+  # To redirect all users to access the site WITHOUT the 'www.' prefix,
+  # (http://www.example.com/... will be redirected to http://example.com/...)
+  # uncomment and adapt the following:
+  # RewriteCond %{HTTP_HOST} ^www\.example\.com$ [NC]
+  # RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
+
+  # Modify the RewriteBase if you are using Drupal in a subdirectory or in a
+  # VirtualDocumentRoot and the rewrite rules are not working properly.
+  # For example if your site is at http://example.com/drupal uncomment and
+  # modify the following line:
+  # RewriteBase /drupal
+  #
+  # If your site is running in a VirtualDocumentRoot at http://example.com/,
+  # uncomment the following line:
+  # RewriteBase /
+
+  # 301 Redirects
+
+RewriteRule ^artman2/ http://www.wmep.org/ [R=301,L]
+RewriteRule ^2009resultsgraphs\.aspx$ http://www.wmep.org/about-us/results-annual-report [R=301,L]
+RewriteRule ^AboutWMEP\.aspx$ http://www.wmep.org/about-us [R=301,L]
+RewriteRule ^AboutWmep\.aspx$ http://www.wmep.org/about-us [R=301,L]
+RewriteRule ^AbsoluteAutomation\.aspx$ http://www.wmep.org/about-us/clients-and-testimonials-7 [R=301,L]
+RewriteRule ^acceleratestaff\.aspx$ http://www.wmep.org [R=301,L]
+RewriteRule ^Adminstaff\.aspx$ http://www.wmep.org/staff-partners/administration [R=301,L]
+RewriteRule ^adminstaff\.aspx$ http://www.wmep.org/staff-partners/administration [R=301,L]
+RewriteRule ^ANextGen\.aspx$ http://www.wmep.org/next-generation-manufacturing [R=301,L]
+RewriteRule ^[Aa]rticles/.*$ http://www.wmep.org/research-reports [R=301,L]
+RewriteRule ^ARTICLES/.*$ http://www.wmep.org/research-reports [R=301,L]
+RewriteRule ^Board\.aspx$ http://www.wmep.org/about-us/board-directors [R=301,L]
+RewriteRule ^BTSquared\.aspx$ http://www.wmep.org/news/press-releases/wmep-and-bt-squared-inc-announce-partnership-drive-sustainability-initiatives [R=301,L]
+RewriteRule ^Centerlinerelease\.aspx$ http://www.wmep.org/news/press-releases/wmep-services-produce-solid-results-wisconsin-manufacturers-during-tough-year [R=301,L]
+RewriteRule ^centralteam\.aspx$ http://www.wmep.org/staff-partners/central-region [R=301,L]
+RewriteRule ^Centralteam\.aspx$ http://www.wmep.org/staff-partners/central-region [R=301,L]
+RewriteRule ^CentralTeam\.aspx$ http://www.wmep.org/staff-partners/central-region [R=301,L]
+RewriteRule ^cfp2010\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^CollegeResources\.aspx$ http://www.wmep.org/resources/training-programs-through-wisconsin-s-technical-colleges [R=301,L]
+RewriteRule ^Commerce\.aspx$ http://www.wmep.org/news/press-releases/wmep-wisconsin-department-commerce-offer-new-program-boost-manufacturing-exports [R=301,L]
+RewriteRule ^ContactUs\.aspx$ http://www.wmep.org/contact-us [R=301,L]
+RewriteRule ^culture\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-culture-development [R=301,L]
+RewriteRule ^Culture\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-culture-development [R=301,L]
+RewriteRule ^DalcoSuccess\.aspx$ http://www.wmep.org/customer-successes/dalco-metals-lean-office-cuts-processing-time-50 [R=301,L]
+RewriteRule ^DeCraneRelease\.aspx$ http://www.wmep.org/customer-successes-1 [R=301,L]
+RewriteRule ^default\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^Default\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^Ericksen\.aspx$ http://www.wmep.org/staff-partners/administration-10 [R=301,L]
+RewriteRule ^EricksenN\.aspx$ http://www.wmep.org/staff-partners/administration-11 [R=301,L]
+RewriteRule ^ExporTech\.aspx$ http://www.wmep.org/next-generation-manufacturing/global-engagement/exportech [R=301,L]
+RewriteRule ^Exportech\.aspx$ http://www.wmep.org/next-generation-manufacturing/global-engagement/exportech [R=301,L]
+RewriteRule ^ExporTechFall2010\.aspx$ http://www.wmep.org/next-generation-manufacturing/global-engagement/exportech [R=301,L]
+RewriteRule ^ExporTechRelease\.aspx$ http://www.wmep.org/next-generation-manufacturing/global-engagement/exportech [R=301,L]
+RewriteRule ^ExporTechTestimonials\.aspx$ http://www.wmep.org/next-generation-manufacturing/global-engagement/exportech/testimonials [R=301,L]
+RewriteRule ^FindYourSolution\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^FintelLandL\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^FlashHelp\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^goglobal\.aspx$ http://www.wmep.org/next-generation-manufacturing/global-engagement [R=301,L]
+RewriteRule ^Grantfundsrelease\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^Grantfundsrelease2\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^growth\.aspx$ http://www.wmep.org/next-generation-manufacturing/customer-focused-innovation [R=301,L]
+RewriteRule ^Growth\.aspx$ http://www.wmep.org/next-generation-manufacturing/customer-focused-innovation [R=301,L]
+RewriteRule ^gusmersuccess\.aspx$ http://www.wmep.org/customer-successes-2 [R=301,L]
+RewriteRule ^Harvardrelease\.aspx$ http://www.wmep.org/customer-successes/harvard-corporation-exports-lean-lead-growth [R=301,L]
+RewriteRule ^home$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^hvlv\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^itfinance\.aspx$ http://www.wmep.org/staff-partners/administration [R=301,L]
+RewriteRule ^ITfinance\.aspx$ http://www.wmep.org/staff-partners/administration [R=301,L]
+RewriteRule ^Lean\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^lean\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^leansixsigma\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^LeanSixSigma\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^medalcraftsuccess\.aspx$ http://www.wmep.org/customer-successes-6 [R=301,L]
+RewriteRule ^MM!2010Release\.aspx$ http://www.wmep.org/news/news-releases [R=301,L]
+RewriteRule ^MM!2010Review\.aspx$ http://www.wmep.org/news/news-releases [R=301,L]
+RewriteRule ^mm08\.aspx$ http://www.wmep.org/news/news-releases [R=301,L]
+RewriteRule ^MM2010Release\.aspx$ http://www.wmep.org/news/news-releases [R=301,L]
+RewriteRule ^MMPClips\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^MMXClips\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^MSOE_RPCRelease\.aspx$ http://www.wmep.org/news/news-releases [R=301,L]
+RewriteRule ^NatlResources\.aspx$ http://www.wmep.org/resources/national-business-information-resources [R=301,L]
+RewriteRule ^ngm\.aspx$ http://www.wmep.org/next-generation-manufacturing [R=301,L]
+RewriteRule ^NGM\.aspx$ http://www.wmep.org/next-generation-manufacturing [R=301,L]
+RewriteRule ^NGMbenefits\.aspx$ http://www.wmep.org/next-generation-manufacturing [R=301,L]
+RewriteRule ^NGMdetails\.aspx$ http://www.wmep.org/next-generation-manufacturing [R=301,L]
+RewriteRule ^NGMNationalRelease\.aspx$ http://www.wmep.org/research-reports/research-studies [R=301,L]
+RewriteRule ^NGMSurveyResults\.aspx$ http://www.wmep.org/research-reports/research-studies [R=301,L]
+RewriteRule ^NgmSurveyResults\.aspx$ http://www.wmep.org/research-reports/research-studies [R=301,L]
+RewriteRule ^northeastteam\.aspx$ http://www.wmep.org/staff-partners/partners [R=301,L]
+RewriteRule ^Northeastteam\.aspx$ http://www.wmep.org/staff-partners/partners [R=301,L]
+RewriteRule ^NortheastTeam\.aspx$ http://www.wmep.org/staff-partners/partners [R=301,L]
+RewriteRule ^OurStaff\.aspx$ http://www.wmep.org/staff-partners [R=301,L]
+RewriteRule ^[Pp]ress\ [Rr]eleases/.*$ http://www.wmep.org/news/news-releases [R=301,L]
+RewriteRule ^profitablesustainability\.aspx$ http://www.wmep.org/next-generation-manufacturing/sustainable-products-process-development [R=301,L]
+RewriteRule ^ProfitableSustainability\.aspx$ http://www.wmep.org/next-generation-manufacturing/sustainable-products-process-development [R=301,L]
+RewriteRule ^PROFITABLESUSTAINABILITY\.aspx$ http://www.wmep.org/next-generation-manufacturing/sustainable-products-process-development [R=301,L]
+RewriteRule ^profitablesustainability2\.aspx$ http://www.wmep.org/next-generation-manufacturing/sustainable-products-process-development [R=301,L]
+RewriteRule ^ProfitableSustainabilityForm\.aspx$ http://www.wmep.org/next-generation-manufacturing/sustainable-products-process-development [R=301,L]
+RewriteRule ^profitablesustainabilityform\.aspx$ http://www.wmep.org/next-generation-manufacturing/sustainable-products-process-development [R=301,L]
+RewriteRule ^ProvenDirectNGM\.aspx$ http://www.wmep.org/next-generation-manufacturing [R=301,L]
+RewriteRule ^qualitysystems\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/enterprise-quality-enhancement-six-sig [R=301,L]
+RewriteRule ^QualitySystems\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/enterprise-quality-enhancement-six-sig [R=301,L]
+RewriteRule ^RegionalEDOresources\.aspx$ http://www.wmep.org/resources/regional-economic-development-organizations [R=301,L]
+RewriteRule ^Register\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^Reid\.aspx$ http://www.wmep.org/staff-partners/administration/kristin-reid [R=301,L]
+RewriteRule ^RequestInformation\.aspx$ http://www.wmep.org/contact-us [R=301,L]
+RewriteRule ^requestinformation\.aspx$ http://www.wmep.org/contact-us [R=301,L]
+RewriteRule ^Results\.aspx$ http://www.wmep.org/about-us/results-annual-report [R=301,L]
+RewriteRule ^results\.aspx$ http://www.wmep.org/about-us/results-annual-report [R=301,L]
+RewriteRule ^RPWMEP\.aspx$ http://www.wmep.org/news/wi-manufacturers-news/reliable-plating-works-inc-awarded-mep-excellence-sustainability-award [R=301,L]
+RewriteRule ^salesmarketingstaff\.aspx$ http://www.wmep.org/staff-partners [R=301,L]
+RewriteRule ^SBAexport\.aspx$ http://www.wmep.org/resources/business-resources-manufacturers/export-express [R=301,L]
+RewriteRule ^Services/CultureChangeMngmt/leanlead\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-culture-development [R=301,L]
+RewriteRule ^Services/Default\.aspx$ http://www.wmep.org/next-generation-manufacturing [R=301,L]
+RewriteRule ^services/default\.aspx$ http://www.wmep.org/next-generation-manufacturing [R=301,L]
+RewriteRule ^Services/default\.aspx$ http://www.wmep.org/next-generation-manufacturing [R=301,L]
+RewriteRule ^Services/GrowthSolnsSBD/customer\.aspx$ http://www.wmep.org/next-generation-manufacturing/customer-focused-innovation [R=301,L]
+RewriteRule ^Services/GrowthSolnsSBD/eureka\.aspx$ http://www.wmep.org/next-generation-manufacturing/customer-focused-innovation/new-product/service-development [R=301,L]
+RewriteRule ^Services/GrowthSolnsSBD/HallKeynote08\.aspx$ http://www.wmep.org/next-generation-manufacturing/customer-focused-innovation [R=301,L]
+RewriteRule ^Services/GrowthSolnsSBD/innovation\.aspx$ http://www.wmep.org/next-generation-manufacturing/customer-focused-innovation [R=301,L]
+RewriteRule ^Services/GrowthSolnsSBD/marketing\.aspx$ http://www.wmep.org/next-generation-manufacturing/customer-focused-innovation [R=301,L]
+RewriteRule ^Services/GrowthSolnsSBD/vocwebinar\.aspx$ http://www.wmep.org/next-generation-manufacturing [R=301,L]
+RewriteRule ^Services/LeanServices/5s\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^Services/LeanServices/5S\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^Services/LeanServices/aboutngm\.aspx$ http://www.wmep.org/research-reports/research-studies [R=301,L]
+RewriteRule ^Services/LeanServices/cellflow\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^services/leanservices/cellflow\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^Services/LeanServices/jimdoyle\.aspx$ http://www.wmep.org/news/wi-manufacturers-news/alpha-source-inc-named-wisconsin-s-small-manufacturing-exporter-year [R=301,L]
+RewriteRule ^Services/LeanServices/kaizen\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^Services/LeanServices/leanacct\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-culture-development [R=301,L]
+RewriteRule ^Services/LeanServices/leanoffice\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-culture-development [R=301,L]
+RewriteRule ^Services/LeanServices/ngmsurvey\.aspx$ http://www.wmep.org/research-reports/research-studies [R=301,L]
+RewriteRule ^Services/LeanServices/pullkanban\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^Services/LeanServices/setupreduction\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^services/leanservices/setupreduction\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^Services/LeanServices/tpm\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^Services/LeanServices/vsm\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/lean-manufacturing-vsm-5s-tpm-twi [R=301,L]
+RewriteRule ^Services/LeanSixSigma/leansixsigmaadv\.aspx$ http://www.wmep.org/next-generation-manufacturing/advanced-talent-management [R=301,L]
+RewriteRule ^Services/QualitySystems/iso9001\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/enterprise-quality-enhancement-six-sig [R=301,L]
+RewriteRule ^Services/QualitySystems/isowebinar\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/enterprise-quality-enhancement-six-sig [R=301,L]
+RewriteRule ^Services/QualitySystems/ts16949\.aspx$ http://www.wmep.org/next-generation-manufacturing/systemic-continuous-improvement/enterprise-quality-enhancement-six-sig [R=301,L]
+RewriteRule ^Services/SupplyChainAcc/accoem\.aspx$ http://www.wmep.org/next-generation-manufacturing/extended-enterprise-management-0 [R=301,L]
+RewriteRule ^Services/SupplyChainAcc/accsupp\.aspx$ http://www.wmep.org/next-generation-manufacturing/extended-enterprise-management-0 [R=301,L]
+RewriteRule ^SiteMap\.aspx$ http://www.wmep.org/sitemap [R=301,L]
+RewriteRule ^southeastteam\.aspx$ http://www.wmep.org/staff-partners/southeast-region [R=301,L]
+RewriteRule ^Southeastteam\.aspx$ http://www.wmep.org/staff-partners/southeast-region [R=301,L]
+RewriteRule ^southeastteam\.aspx?wwparam=1276202548$ http://www.wmep.org/staff-partners/southeast-region [R=301,L]
+RewriteRule ^southwestteam\.aspx$ http://www.wmep.org/staff-partners/southwest-region [R=301,L]
+RewriteRule ^Southwestteam\.aspx$ http://www.wmep.org/staff-partners/southwest-region [R=301,L]
+RewriteRule ^SouthWestTeam\.aspx$ http://www.wmep.org/staff-partners/southwest-region [R=301,L]
+RewriteRule ^StandardImagingNGM\.aspx$ http://www.wmep.org/ [R=301,L]
+RewriteRule ^SuccessStories.*$ http://www.wmep.org/customer-successes [R=301,L]
+RewriteRule ^supplychain\.aspx$ http://www.wmep.org/next-generation-manufacturing/extended-enterprise-management-0 [R=301,L]
+RewriteRule ^SupplyChain\.aspx$ http://www.wmep.org/next-generation-manufacturing/extended-enterprise-management-0 [R=301,L]
+RewriteRule ^TWI\.aspx$ http://www.wmep.org/next-generation-manufacturing/advanced-talent-management/training-services/training-within-industry [R=301,L]
+RewriteRule ^UWEBI\.aspx$ http://www.wmep.org/news/press-releases/alliance-brings-e-business-best-practices-wisconsin-manufacturers [R=301,L]
+RewriteRule ^WhoWeAre\.aspx$ http://www.wmep.org/about-us [R=301,L]
+RewriteRule ^wiexportstats\.aspx$ http://www.wmep.org/staff-partners/partners/solution-partners/joint-venture-partners [R=301,L]
+RewriteRule ^WIresources\.aspx$ http://www.wmep.org/resources [R=301,L]
+RewriteRule ^wiresources\.aspx$ http://www.wmep.org/resources [R=301,L]
+RewriteRule ^witradeteam\.aspx$ http://www.wmep.org/resources [R=301,L]
+RewriteRule ^WMEP2010Impact\.aspx$ http://www.wmep.org/about-us/results-annual-report [R=301,L]
+RewriteRule ^Workshops/Default\.aspx$ http://www.wmep.org/events [R=301,L]
+RewriteRule ^workshops/default\.aspx$ http://www.wmep.org/events [R=301,L]
+RewriteRule ^Workshops/MM09/presenters09\.aspx$ http://www.wmep.org/events [R=301,L]
+
+
+
+
+
+  # Rewrite URLs of the form 'x' to the form 'index.php?q=x'.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !=/favicon.ico
+  RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
+
+
+
+</IfModule>
+
+
+
+
+# $Id: .htaccess,v 1.90.2.3 2008/12/10 20:04:08 goba Exp $

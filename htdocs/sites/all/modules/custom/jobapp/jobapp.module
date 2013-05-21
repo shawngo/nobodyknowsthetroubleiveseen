@@ -1,0 +1,100 @@
+<?php
+// $Id$
+/**
+ * @file
+ * Job App Module file
+ *
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function jobapp_menu() {
+  $items = array();
+  $items['admin/settings/jobapp'] = array(
+    'title' => 'Job App settings',
+    'description' => 'Job App Settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jobapp_admin_settings_form'),
+    'file' => 'jobapp.admin.inc',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $items;
+}
+
+/**
+ * Implementation of hook_nodeapi()
+ */
+function jobapp_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  switch($op) {
+    case 'view':
+      if($node->type == 'job') {
+        $nid = arg(1);
+        $node->content['body']['#value'] .= '<h3>'. l('Apply for this position online', variable_get('jobapp_application_form', 'node/40'), array('query' => array('nid' => $nid))) .'</h3>';
+        $jobapp_apply_other = trim(variable_get('jobapp_apply_other', ''));
+        if($jobapp_apply_other) {
+          $node->content['body']['#value'] .= $jobapp_apply_other;          
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function jobapp_form_alter(&$form, $form_state, $form_id) {
+  $jobappnid = variable_get('job_app_nid', 40);
+	$jobappnid = variable_get('jobapp_application_form', 'hmmmm');
+  // check for webform form being viewed and attach dependency flags
+/*
+dsm(
+array(
+substr($form_id, 0, 20) == 'webform_client_form_' ,
+isset($form['#parameters'][2]->nid) ,
+$form['#parameters'][2]->nid ,
+$jobappnid
+));
+*/
+
+	if (substr($form_id, 0, 20) == 'webform_client_form_' && isset($form['#parameters'][2]->nid) && 'node/'. $form['#parameters'][2]->nid == $jobappnid) {
+    $jobapp_nid = jobapp_get_nid();
+    if ($jobapp_nid > 0) {
+      // add our job specific fields and update the action in case validation fails
+      $node = node_load($jobapp_nid);
+      if($node) {
+       $form['submitted']['job'] = array(
+         '#type' => 'fieldset',
+         '#title' => 'Position Information',
+         '#weight' => 0.001,
+       );
+       $form['submitted']['job']['information'] = array(
+         '#value' => '<p><strong>Position:</strong> ' . $node->title . '</p>',
+         '#weight' => 0.0001,
+       );
+      }
+      $form['#action'] = '/'. variable_get('jobapp_application_form', 'node/40') .'?nid='. $jobapp_nid;
+    }
+  }
+}
+
+/**
+ * Utility function to find the referenced node id
+ *
+ * @return int Node ID of Job Position
+ */
+function jobapp_get_nid() {
+  // handles the ?nid=# case //
+  if(isset($_GET['nid'])) {
+    return (int) $_GET['nid'];
+  }
+  // handles the /nid123 case (which may never happen but I'll leave it in here for filler //
+  foreach(arg() as $arg) {
+    if(strstr($arg, 'nid')) {
+      $start = strpos($arg, 'nid');
+      return substr($arg, $start+3);
+    }
+  }
+}

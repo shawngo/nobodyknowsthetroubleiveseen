@@ -1,0 +1,172 @@
+<?php
+// $Id: constant_contact.install,v 1.11 2010/02/02 16:57:55 justphp Exp $
+require_once 'constant_contact.config.php';
+/**
+ * @file
+ */
+
+/**
+ * Implementation of hook_requirements().
+ * This helps admin know if the module is functioning correctly.
+ */
+function constant_contact_requirements($phase)
+{
+	$requirements = array();
+	
+	// try to change the allow_url_fopen setting
+	@ini_get('allow_url_fopen', 1);
+	
+	if($phase == 'runtime'):
+		// running the module...
+	else:
+		// installing...
+		if(!extension_loaded('xml'))
+		{
+			$requirements['xml'] = array(
+			'value' => t('XML extension Not installed'),
+			'severity' => REQUIREMENT_ERROR,
+			'description' => t('The XML extension for PHP is missing or outdated. Please check the PHP XML documentation for information on how to correct this.'),
+			);
+			$requirements['xml']['title'] = t('Constant Contact');
+		}
+			
+		if(!extension_loaded('openssl'))
+		{
+			$requirements['openssl'] = array(
+			'value' => t('openssl extension Not installed'),
+			'severity' => REQUIREMENT_ERROR,
+			'description' => t('The openssl extension for PHP is missing or outdated. Please check the PHP openssl documentation for information on how to correct this.'),
+			);
+			$requirements['openssl']['title'] = t('Constant Contact');
+		}
+		elseif(fsockopen('ssl://www.google.com', 443, $errno, $errstr) === false)
+		{
+			$requirements['ssl'] = array(
+			'value' => t('Problem with fsockopen function'),
+			'severity' => REQUIREMENT_ERROR,
+			'description' => t("We encountered a problem while trying to test the servers secure communication abilities, the fsockopen failed with the message $errstr ($errno)."),
+			);
+			$requirements['xml']['title'] = t('Constant Contact');
+		}
+			
+		if(!ini_get('allow_url_fopen'))
+		{
+			$requirements['allow_url_fopen'] = array(
+			'value' => t('allow_url_fopen setting Not enabled'),
+			'severity' => REQUIREMENT_ERROR,
+			'description' => t('The allow_url_fopen setting is not enabled in your php.ini config file'),
+			);
+			$requirements['allow_url_fopen']['title'] = t('Constant Contact');
+		}
+	endif;
+	
+	return $requirements;
+}
+
+
+/**
+ * Installs the variables we need for the module
+ */
+function constant_contact_install()
+{
+	cache_clear_all('variables', 'cache');
+	
+	// list of all extra fields the API supports
+	$cc_extra_fields = array(
+		'First Name', 
+		'Middle Name', 
+		'Last Name',
+		'Job Title', 
+		'Company Name',
+		'Home Phone', 
+		'Work Phone',
+		'Addr1','Addr2','Addr3',
+		'City',
+		'State Code',
+		'State Name',
+		'Country Code',
+		'Country Name',
+		'Postal Code',
+		'Sub Postal Code',
+		'Note',
+		'CustomField1',
+		'CustomField2',
+		'CustomField3',
+		'CustomField4',
+		'CustomField5',
+		'CustomField6',
+		'CustomField7',
+		'CustomField8',
+		'CustomField9',
+		'CustomField10',
+		'CustomField11',
+		'CustomField12',
+		'CustomField13',
+		'CustomField14',
+		'CustomField15',
+	);
+	
+	// build the mappings
+	$fields = array();
+	foreach(str_replace(' ', '', $cc_extra_fields) as $field):
+		$fields[] = "$field:$field";
+	endforeach;
+	$mappings = implode(', ', $fields);
+	
+	variable_set('cc_username','');
+	variable_set('cc_password','');
+	variable_set('cc_form_block_fields', array());
+	variable_set('cc_extra_fields', $cc_extra_fields);
+	variable_set('cc_extra_field_mappings', $mappings);
+	variable_set('cc_register_page_method', CC_REGISTER_PAGE_METHOD);
+	variable_set('cc_default_opt_in', CC_DEFAULT_OPT_IN);
+	variable_set('cc_signup_title', CC_SIGNUP_TITLE);
+	variable_set('cc_signup_description', CC_SIGNUP_DESCRIPTION);
+	variable_set('cc_sync_unsubscribed_users',CC_SYNC_UNSUBSCRIBED_USERS);
+	variable_set('cc_sync_last_run',0);
+	variable_set('cc_block_redirect_url','');
+	variable_set('cc_list_selection_format',CC_LIST_SELECTION_FORMAT);
+	variable_set('cc_block_list_selection_format',CC_LIST_SELECTION_FORMAT);
+	variable_set('cc_block_show_list_selection',CC_BLOCK_SHOW_LIST_SELECTION);
+	variable_set('cc_block_lists',array());
+}
+
+/**
+ * Removes the variables we have set for the module
+ */
+function constant_contact_uninstall()
+{
+	variable_del('cc_username');
+	variable_del('cc_password');
+	variable_del('cc_form_block_fields');
+	variable_del('cc_extra_fields');
+	variable_del('cc_extra_field_mappings');
+	variable_del('cc_register_page_method');
+	variable_del('cc_default_opt_in');
+	variable_del('cc_signup_title');
+	variable_del('cc_signup_description');
+	variable_del('cc_lists');
+	variable_del('cc_sync_unsubscribed_users');
+	variable_del('cc_sync_last_run');
+	variable_del('cc_block_redirect_url');
+	variable_del('cc_list_selection_format');
+	variable_del('cc_block_list_selection_format');
+	variable_del('cc_block_show_list_selection');
+	variable_del('cc_block_lists');
+}
+
+/**
+ * Implementation of hook_disable().
+ */
+function constant_contact_disable()
+{
+	drupal_set_message(t('The Constant Contact module has been disabled, to upgrade please uninstall.'));
+}
+
+/**
+ * Implementation of hook_enable().
+ */
+function constant_contact_enable()
+{
+	drupal_set_message(t('The Constant Contact module has been enabled, please visit the settings page to configure your account details.'));
+}

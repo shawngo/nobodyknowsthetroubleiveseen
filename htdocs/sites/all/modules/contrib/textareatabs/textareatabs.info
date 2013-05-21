@@ -1,0 +1,11 @@
+; $Id: textareatabs.info,v 1.1.2.1 2008/03/18 20:05:31 smokris Exp $
+name = "Textarea Tabs"
+description = "Makes all textareas (such as the 'body' field on the node edit page) accept the Tab key --- pressing Tab while in a textarea will now insert a tab into the content, rather than moving focus to the next field."
+core = 6.x
+
+; Information added by drupal.org packaging script on 2008-03-18
+version = "6.x-0.1"
+core = "6.x"
+project = "textareatabs"
+datestamp = "1205871015"
+

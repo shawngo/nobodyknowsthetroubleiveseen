@@ -1,0 +1,104 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<tocdata>
+<item name="Welcome" url="Welcome.htm" />
+<book name="Accelerate Project Goals and Activities" >
+  <item name="General Principles" url="General_Principles.htm" />
+  <item name="Phase I Activities Overview" url="Phase_I_Overview.htm" />
+  <book name="Pre-project Activities" >
+    <item name="Pre-project Overview" url="Pre-project_Overview.htm" />
+    <item name="Pre-project Step 1" url="Pre-project_Step_1.htm" />
+    <item name="Pre-project Step 2" url="Pre-project_Step_2.htm" />
+    <item name="Pre-project Step 3" url="Pre-project_Step_3.htm" />
+  </book>
+  <book name="Phase I Project Delivery Activities" >
+    <item name="Project Materials" url="Project_Materials.htm" />
+    <item name="Project Agenda" url="Project_Agenda.htm" />
+    <item name="Day 1: Detailed Content" url="Day_1_Detailed_Content.htm" />
+    <item name="Day 2: Detailed Content" url="Day_2_Detailed_Content.htm" />
+    <item name="Day 2 Project Deliverables" url="Day_2_Project_Deliverables.htm" />
+  </book>
+  <book name="Phase I Follow-up Activities" >
+    <item name="Review with MEP SCA" url="Review_with_MEP_SCA.htm" />
+    <item name="Phase I Follow-up with Supplier" url="Phase_I_Follow-up_with_Supplier.htm" />
+    <item name="Supplier Phase II Reporting Requirements" url="Supplier_Phase_II_Reporting_Requirements.htm" />
+  </book>
+</book>
+<book name="Value Stream Mapping and Calendar Time Conversion" >
+  <item name="Introduction to VSM and MCT" url="Introduction_to_Mapping_and_Conversion.htm" />
+  <book name="Preparing the Value Stream Map for MCT Conversion" >
+    <item name="Conversion Overview" url="Conversion_Overview.htm" />
+    <item name="Operations Planning Loop" url="Operations_Planning_Loop.htm" />
+    <item name="Raw Material &amp; Procurement Loop" url="Raw_Material_Loop.htm" />
+    <item name="Operations Manufacturing Loop" url="Operations_Manufacturing_Loop.htm" />
+    <item name="Logistics Loop" url="Logistics_Loop.htm" />
+    <item name="Contingency Inventory Loop" url="Contingency_Inventory_Loop.htm" />
+  </book>
+  <book name="Calculating the MCT Measurement" >
+    <item name="MCT Measurement: Step 1" url="MCT_Measurement__Step_1.htm" />
+    <item name="MCT Measurement: Steps 2 and 3" url="MCT_Measurement__Steps_2_and_3.htm" />
+    <item name="MCT Measurement: Step 4" url="MCT_Measurement__Step_4.htm" />
+    <item name="MCT Measurement: Step 5" url="MCT_Measurement__Step_5.htm" />
+    <item name="MCT Measurement: Steps 6 - 9" url="MCT_Measurement__Steps_6_-_9.htm" />
+    <item name="MCT Measurement: Step 10" url="MCT_Measurement__Step_10.htm" />
+    <item name="MCT Measurement: Steps 11 and 12" url="MCT_Measurement__Steps_11_and_12.htm" />
+    <item name="MCT Measurement: Steps 13 and 14" url="MCT_Measurement__Steps_13_and_14.htm" />
+    <item name="Understanding the Calendar Time Calculations" url="Calendar_Time_Calculations.htm" />
+    <item name="Comparison Charts" url="Comparison_Charts.htm" />
+  </book>
+  <book name="Frequently Asked Questions" >
+    <item name="FAQ1" url="FAQ1.htm" />
+    <item name="FAQ2" url="FAQ2.htm" />
+    <item name="FAQ3" url="FAQ3.htm" />
+    <item name="FAQ4" url="FAQ4.htm" />
+  </book>
+  <book name="Samples" >
+    <item name="Sample Value Stream Map" url="Sample_Value_Stream_Map.htm" />
+    <item name="Sample Summary Boxes" url="Sample_Summary_Boxes.htm" />
+    <item name="Sample Calendar Time Conversion Sheet" url="Sample_Calendar_Time_Conversion_Sheet.htm" />
+  </book>
+</book>
+<book name="Appendix 1: Generic Accelerate Project Charter" >
+  <item name="Project Charter" url="Project_Charter.htm" />
+</book>
+<book name="Appendix 2: Pre-Project Supplier Company Profile Questionnaire" >
+  <item name="Profile Questionnaire" url="Profile_Questionnaire.htm" />
+</book>
+<book name="Appendix 3: Supplier Lean Self-Assessment" >
+  <item name="Supplier Lean Self-Assessment" url="Supplier_Lean_Self-Assessment.htm" />
+</book>
+<book name="Appendix 4: Data Collection Sheets for VSM" >
+  <item name="Manufacturing Data Sheet" url="Manufacturing_Data_Sheet.htm" />
+  <item name="Office Data Sheet" url="Office_Data_Sheet.htm" />
+</book>
+<book name="Appendix 5: Critical Concepts from &quot;It's About Time&quot;" >
+  <item name="Extending the Accelerate Philosophy to the Entire Enterprise" url="Extending_the_Accelerate_Philosophy_to_the_Entire_Enterprise.htm" />
+  <item name="Critical Concept 1" url="Critical_Concept_1.htm" />
+  <item name="Critical Concept 2" url="Critical_Concept_2.htm" />
+  <item name="Critical Concept 3" url="Critical_Concept_3.htm" />
+  <item name="Critical Concept 4" url="Critical_Concept_4.htm" />
+  <item name="Critical Concept 4 Exhibit 1" url="Critical_Concept_4_Exhibit_1.htm" />
+</book>
+<book name="Appendix 6: Sample Completed Project Plan" >
+  <item name="Sample Completed Project Plan" url="Sample_Completed_Project_Plan.htm" />
+</book>
+<book name="Appendix 7: Supplier Project Report Template" >
+  <item name="Report Template Slides 1 and 2" url="Report_Template_Slides_1_and_2.htm" />
+  <item name="Report Template Slides 3 and 4" url="Report_Template_Slides_3_and_4.htm" />
+  <item name="Report Template Slides 5 and 6" url="Report_Template_Slides_5_and_6.htm" />
+  <item name="Report Template Slides 7 and 8" url="Report_Template_Slides_7_and_8.htm" />
+  <item name="Report Template Slides 9 and 10" url="Report_Template_Slides_9_and_10.htm" />
+  <item name="Report Template Slides 11 and 12" url="Report_Template_Slides_11_and_12.htm" />
+  <item name="Report Template Slides 13 and 14" url="Report_Template_Slides_13_and_14.htm" />
+  <item name="Report Template Slides 15 and 16" url="Report_Template_Slides_15_and_16.htm" />
+  <item name="Report Template Slides 17 and 18" url="Report_Template_Slides_17_and_18.htm" />
+  <item name="Report Template Slides 19 and 20" url="Report_Template_Slides_19_and_20.htm" />
+  <item name="Report Template Slides 21 and 22" url="Report_Template_Slides_21_and_22.htm" />
+</book>
+<book name="Appendix 8: Post Phase I Review Questionnaire" >
+  <item name="Review Questionnaire" url="Review_Questionnaire.htm" />
+</book>
+<book name="Appendix 9: Prelim Supplier Project Financial Impact" >
+  <item name="Financial Impact" url="Financial_Impact.htm" />
+</book>
+
+</tocdata>

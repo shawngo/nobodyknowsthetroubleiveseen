@@ -1,0 +1,5 @@
+; $Id$
+name = "Utility Module"
+description = "Adds override functionality - tells you what kind of node you're editing too"
+core = 6.x
+package = shawngo

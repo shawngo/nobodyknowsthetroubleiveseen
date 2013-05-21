@@ -1,0 +1,396 @@
+<?php
+// $Id: uc_quotes.module,v 1.1 2009/02/24 01:11:18 jtsnow Exp $
+
+/**
+ * @file
+ * The Quote Request module for Ubercart.
+ * 
+ */
+
+/******************************************************************************
+ * Drupal Hooks                                                               *
+ ******************************************************************************/
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function uc_quotes_form_alter(&$form, $form_state, $form_id) {
+  if ($form['submit']['#value'] == variable_get('uc_product_add_to_cart_text', t('Add to cart')) && $form['nid']['#value']) {
+    if (db_result(db_query("SELECT quote FROM {uc_quotes} WHERE nid = %d", $form['nid']['#value']))) {
+      $form['submit']['#value'] = variable_get('uc_add_to_quote_text', 'Add to quote');
+    }
+  }
+  
+}
+
+/**
+ * Display a formatted list of products.
+ *
+ * @param $products
+ *   An array of product nids.
+ * @return
+ *   A TAPIr table.
+ * @ingroup themeable
+ */
+function theme_uc_quotes_products($products) {
+  if (!$products) {
+    $output .= '<div class="no-products">'. t('No products are available in this category.') .'</div>';
+    return $output;
+  }
+  else {
+    if (variable_get('uc_catalog_grid_display', FALSE)) {
+      return theme('uc_catalog_product_grid', $products);
+    }
+    else {
+      $table = tapir_get_table('uc_product_quotes_table', $products);
+      return drupal_render($table);
+    }
+  }
+}
+
+function theme_uc_quotes_product_grid($products) {
+  $product_table = '<div class="category-grid-products"><table>';
+  $count = 0;
+  foreach ($products as $nid) {
+    $product = node_load($nid);
+
+    if ($count == 0) {
+      $product_table .= "<tr>";
+    }
+    else if ($count % variable_get('uc_catalog_grid_display_width', 3) == 0) {
+      $product_table .= "</tr><tr>";
+    }
+
+    $titlelink = l($product->title, "node/$nid", array('html' => TRUE));
+    if (module_exists('imagecache') && isset($product->field_image_cache) && file_exists($product->field_image_cache[0]['filepath'])) {
+      $imagelink = l(theme('imagecache', 'product_list', $product->field_image_cache[0]['filepath']), "node/$nid", array('html' => TRUE));
+    }
+    else {
+      $imagelink = '';
+    }
+
+    $product_table .= '<td>';
+    if (variable_get('uc_catalog_grid_display_title', TRUE)) {
+      $product_table .= '<span class="catalog_grid_title">'. $titlelink .'</span>';
+    }
+    if (variable_get('uc_catalog_grid_display_model', TRUE)) {
+      $product_table .= '<span class="catalog_grid_ref">'. $product->model .'</span>';
+    }
+    $product_table .= '<span class="catalog_grid_image">'. $imagelink .'</span>';
+    if (variable_get('uc_catalog_grid_display_sell_price', TRUE)) {
+      if (db_result(db_query("SELECT quote FROM {uc_quotes} WHERE nid = %d", $nid))) {
+        $product_table .= '<span class="catalog_grid_sell_price">'. t('Inquire for Price') .'</span>';
+      }
+      else {
+        $product_table .= '<span class="catalog_grid_sell_price">'. uc_currency_format($product->sell_price) .'</span>';
+      }
+      
+    }
+    if (variable_get('uc_catalog_grid_display_add_to_cart', TRUE)) {
+      if (variable_get('uc_catalog_grid_display_attributes', TRUE)) {
+        $product_table .= theme('uc_product_add_to_cart', $product);
+      }
+      else {
+        $product_table .= drupal_get_form('uc_catalog_buy_it_now_form_'. $product->nid, $product);
+      }
+    }
+    $product_table .= '</td>';
+
+    $count++;
+  }
+  $product_table .= "</tr></table></div>";
+  return $product_table;
+}
+
+/**
+ * Implementation of hook_theme_registry_alter().
+ */
+function uc_quotes_theme_registry_alter(&$theme_registry) {
+  $theme_registry['uc_catalog_product_grid']['theme path'] = drupal_get_path('module', 'uc_quotes');
+  $theme_registry['uc_catalog_product_grid']['theme paths'][0] = drupal_get_path('module', 'uc_quotes');
+  $theme_registry['uc_catalog_product_grid']['function'] = 'theme_uc_quotes_product_grid';
+  $theme_registry['uc_catalog_products']['theme path'] = drupal_get_path('module', 'uc_quotes');
+  $theme_registry['uc_catalog_products']['theme paths'][0] = drupal_get_path('module', 'uc_quotes');
+  $theme_registry['uc_catalog_products']['function'] = 'theme_uc_quotes_products';
+}
+
+/******************************************************************************
+ * TAPIr Hooks                                                                *
+ ******************************************************************************/
+
+/**
+ * Define up the product list table.
+ *
+ * @see uc_product_table
+ */
+function uc_product_quotes_table_settings() {
+  $tables = array();
+
+  $tables[] = array(
+    'id' => 'uc_product_table',
+    'description' => t('Lists a group of products in an abbreviated format.'),
+    'path' => 'admin/store/settings/tables',
+    'access' => 'administer store',
+    'preview' => FALSE,
+  );
+
+  return $tables;
+}
+
+function uc_product_quotes_table_header() {
+  $enabled = uc_product_field_enabled();
+  $columns = array();
+
+  if (module_exists('imagecache') && $enabled['image']) {
+    $columns['image'] = array(
+      'weight' => -5,
+      'cell' => array('data' => t('Image')),
+    );
+  }
+  $columns['name'] = array(
+    'weight' => 0,
+    'cell' => array('data' => t('Name'), 'field' => 'n.title'),
+  );
+
+  if ($enabled['list_price']) {
+    $columns['list_price'] = array(
+      'weight' => 3,
+      'cell' => array('data' => t('List price'), 'field' => 'p.list_price'),
+    );
+  }
+
+  if ($enabled['sell_price']) {
+    $columns['price'] = array(
+      'weight' => 5,
+      'cell' => array('data' => t('Price'), 'field' => 'p.sell_price'),
+    );
+  }
+
+  if (module_exists('uc_cart') && (arg(0) != 'admin' || $_GET['q'] == 'admin/store/settings/tables/uc_product_table') && $enabled['add_to_cart']) {
+    $columns['add_to_cart'] = array(
+      'weight' => 10,
+      'cell' => array('data' => t('Add to cart'), 'nowrap' => 'nowrap'),
+    );
+  }
+
+  return $columns;
+}
+
+/**
+ * Display product fields in a TAPIr table.
+ *
+ * Display image, name, price, and add to cart form.
+ */
+function uc_product_quotes_table($args = array()) {
+  $enabled = uc_product_field_enabled();
+  $table = array(
+    '#type' => 'tapir_table',
+    '#attributes' => array(
+      'class' => 'category-products',
+    ),
+    '#columns' => uc_product_table_header(),
+    '#rows' => array(),
+  );
+
+  foreach ($args as $nid) {
+    $data = array();
+    $node = node_load($nid);
+    if ($enabled['image']) {
+      if (module_exists('imagecache')) {
+        if (($field = variable_get('uc_image_'. $node->type, '')) && isset($node->$field) && file_exists($node->{$field}[0]['filepath'])) {
+          $image = $node->{$field}[0];
+          $data['image'] = array('#value' => l(theme('imagecache', 'product_list', $image['filepath'], $image['data']['alt'], $image['data']['title']), 'node/'. $node->nid, array('html' => TRUE)));
+        }
+        else {
+          $data['image'] = array('#value' => t('n/a'));
+        }
+      }
+    }
+    $data['name'] = array(
+      '#value' => l($node->title, 'node/'. $node->nid),
+      '#cell_attributes' => array('width' => '100%'),
+    );
+    if ($enabled['list_price']) {
+      $data['list_price'] = array('#value' => uc_currency_format($node->list_price), '#cell_attriubtes' => array('nowrap' => 'nowrap'));
+    }
+    if ($enabled['sell_price']) {
+      if (db_result(db_query("SELECT quote FROM {uc_quotes} WHERE nid = %d", $nid))) {
+        $data['price'] = array('#value' => t('Inquire for price'), '#cell_attributes' => array('data' => t('Inquire for price'), 'nowrap' => 'nowrap'));
+      }
+      else {
+        $data['price'] = array('#value' => theme('uc_product_price', $node->sell_price, 'sell-price', TRUE), '#cell_attriubtes' => array('nowrap' => 'nowrap'));
+      }   
+    }
+
+    if (module_exists('uc_cart') && arg(0) != 'admin' && $enabled['add_to_cart']) {
+      $data['add_to_cart'] = array('#value' => drupal_get_form('uc_catalog_buy_it_now_form_'. $node->nid, $node));
+    }
+    $table[] = $data;
+  }
+
+  if (!count(element_children($table))) {
+    $table[] = array(
+      'name' => array(
+        '#value' => t('No products available.'),
+        '#cell_attributes' => array(
+          'colspan' => 'full',
+        ),
+      ),
+    );
+  }
+
+  return $table;
+}
+
+/******************************************************************************
+ * Ubercart Hooks                                                             *
+ ******************************************************************************/
+
+/**
+ * Implementation of hook_product_feature().
+ */
+function uc_quotes_product_feature() {
+  $features[] = array(
+    'id' => 'quote',
+    'title' => t('Price Quote'),
+    'callback' => 'uc_quotes_feature_form',
+    'delete' => 'uc_quotes_feature_delete',
+    'settings' => 'uc_quotes_feature_settings',
+  );
+  return $features;
+}
+
+/**
+ * Implementation of hook_cart_item().
+ */
+function uc_quotes_cart_item($op, &$item) {
+  $quote_feature = db_fetch_object(db_query("SELECT * FROM {uc_quotes} WHERE nid = %d", $item->nid));
+  switch ($op) {
+    case 'load':
+      if ($quote_feature->quote) {  
+        $item->price = '';
+        $item->title .= ' ' . variable_get('uc_add_to_quote_cart_text', t('(Price Inquiry)'));
+      }
+      break;
+    case 'can_ship':
+      if ($quote_feature->quote) {  // Quotes are not shippable.
+        return FALSE;
+      }
+      return TRUE;
+      break;
+  }
+}
+
+
+/******************************************************************************
+ * Menu Callbacks                                                             *
+ ******************************************************************************/
+
+/***************************************************************************** *
+ * Callback Functions, Forms, and Tables                                       *
+ ***************************************************************************** */
+
+/**
+ * product_feature delete function
+ */
+function uc_quotes_feature_delete($feature) {
+  db_query("DELETE FROM {uc_quotes} WHERE pfid = %d", $feature['pfid']);
+}
+
+/**
+ * Form builder for hook_product_feature
+ */
+function uc_quotes_feature_form($form_state, $node, $feature) {
+  if (!empty($feature)) {
+    $quote = db_fetch_object(db_query("SELECT * FROM {uc_quotes} WHERE pfid = %d", $feature['pfid']));
+    $default_feature = $feature['pfid'];
+    $default_quote = $quote->quote;
+  }
+  $form['nid'] = array(
+      '#type' => 'value',
+      '#value' => $node->nid,
+  );
+  $form['pfid'] = array(
+    '#type' => 'value',
+    '#value' => $default_feature,
+  );
+  $form['uc_quote'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Quotable product'),
+    '#default_value' => $default_quote,
+    '#description' => t('Check if this product requires the customer to receive a price quote.'),
+  );
+  return uc_product_feature_form($form);
+}
+
+function uc_quotes_feature_form_validate($form, &$form_state) {
+  if (!$form_state['values']['nid']) {
+    form_set_error('nid', t('Invalid node id.'));
+  }
+}
+
+function uc_quotes_feature_form_submit($form, &$form_state) {
+  if (empty($form_state['values']['pfid'])) {
+    $pfid = db_result(db_query("SELECT pfid FROM {uc_quotes} WHERE nid = %d", $form_state['values']['nid']));
+    $pfid = $pfid ? $pfid : NULL;
+  }
+  else {
+    $pfid = $form_state['values']['pfid'];
+    db_query("UPDATE {uc_quotes} SET quote = %d WHERE pfid = %d", $form_state['values']['uc_quote'], $pfid);
+  }
+  if ($form_state['values']['uc_quote']) {
+    $description = '<strong>' . t('Requires the customer to receive a price quote.') . '</strong>';
+  }
+  else {
+    $description = '<strong>' . t('<strong>Customer not required to receive a price quote.') . '</strong>';
+  }
+  $data = array(
+    'pfid' => $pfid,
+    'nid' => $form_state['values']['nid'],
+    'fid' => 'quote',
+    'description' => $description,
+  );
+  $form_state['redirect'] = uc_product_feature_save($data);
+  $node = node_load($form_state['values']['nid']);
+  
+  if ($form_state['values']['uc_quote']) {
+    $node->sell_price = 0;
+    $node->shippable = 0;
+    node_save($node);
+  }
+  
+  if (empty($form_state['values']['pfid']) && !$pfid) {
+    $pfid = db_last_insert_id('uc_product_features', 'pfid');
+    db_query("INSERT INTO {uc_quotes} (pfid, nid, quote) VALUES (%d, %d, %d)", $pfid, $form_state['values']['nid'], $form_state['values']['uc_quote']);
+  }
+}
+
+/**
+ * Form builder for quotes settings
+ */
+function uc_quotes_feature_settings() {
+  $statuses = array();
+  foreach (uc_order_status_list('general') as $status) {
+    $statuses[$status['id']] = $status['title'];
+  }
+  $form['uc_add_to_quote_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t("'Add to Quote' Button Text"),
+    '#description' => t('Adjust the text of the submit button for <em>Add to Quote</em> forms in various places on the site.'),
+    '#default_value' => variable_get('uc_add_to_quote_text', t('Add to Quote')),
+  );
+  $form['uc_add_to_quote_cart_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t("Shopping Cart Text"),
+    '#description' => t('Adjust the text of the submit button for <em>Add to Quote</em> forms in various places on the site.'),
+    '#default_value' => variable_get('uc_add_to_quote_cart_text', t('(Price Inquiry)')),
+  );
+  return $form;
+}
+
+function uc_quotes_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  if ($op == 'view' && db_result(db_query("SELECT quote FROM {uc_quotes} WHERE nid = %d", $node->nid))) {
+    $node->content['display_price']['#value'] = '<div class="quotes-inquiry">'. t('Inquire for pricing') .'</div>';
+    $node->content['sell_price']['#value'] = '<div class="quotes-inquiry">'. t('Inquire for pricing') .'</div>';
+  } 
+}

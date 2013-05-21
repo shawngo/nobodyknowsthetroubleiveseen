@@ -1,0 +1,81 @@
+Index: imageapi.inc
+===================================================================
+RCS file: /cvs/drupal-contrib/contributions/modules/imagecache_effects/imageapi.inc,v
+retrieving revision 1.1
+diff -u -p -r1.1 imageapi.inc
+--- imageapi.inc	5 Jan 2009 00:32:38 -0000	1.1
++++ imageapi.inc	14 Mar 2009 08:53:41 -0000
+@@ -82,12 +82,12 @@ function imageapi_image_watermark($image
+ function imageapi_gd_image_watermark($image, $marker, $options = array()) {
+   // because of a bug? in gd with png images, we have to use another function
+   if ($marker->info['mime_type'] == 'image/png' && $options['opacity'] == 100) {
+-    imagealphablending($image->res, true);
+-    imagealphablending($marker->res, true);
+-    return imagecopy($image->res, $marker->res, $options['x'], $options['y'], 0, 0, $marker->info['width'], $marker->info['height']);
++    imagealphablending($image->resource, true);
++    imagealphablending($marker->resource, true);
++    return imagecopy($image->resource, $marker->resource, $options['x'], $options['y'], 0, 0, $marker->info['width'], $marker->info['height']);
+   }
+   else {
+-    return imagecopymerge($image->res, $marker->res, $options['x'], $options['y'], 0, 0, $marker->info['width'], $marker->info['height'], $options['opacity']);
++    return imagecopymerge($image->resource, $marker->resource, $options['x'], $options['y'], 0, 0, $marker->info['width'], $marker->info['height'], $options['opacity']);
+   }
+ }
+ 
+@@ -132,48 +132,48 @@ function imageapi_gd_image_reflection(&$
+   
+   $background = imagecreatetruecolor($width, $height);
+   imagefill($background, 0, 0, $options['color']);
+-  imagecopy($background, $image->res, $x, $y, 0, 0, $image->info['width'], $image->info['height']);
++  imagecopy($background, $image->resource, $x, $y, 0, 0, $image->info['width'], $image->info['height']);
+   
+   $return = false;
+   switch ($options['position']) {
+     case 'top':
+       $steps = min($options['size'], $image->info['height']);
+       for ($i = 0, $opacity = 50; $i < $steps; ++$i, $opacity = ceil(((($steps - $i) / $steps) * 100) / 2)) {
+-        imagecopymerge($background, $image->res, 0, $y - $i, 0, $i, $image->info['width'], 1, $opacity);
++        imagecopymerge($background, $image->resource, 0, $y - $i, 0, $i, $image->info['width'], 1, $opacity);
+       }
+       $return = true;
+       break;
+     case 'bottom':
+       $steps = min($options['size'], $image->info['height']);
+       for ($i = 0, $opacity = 50; $i < $steps; ++$i, $opacity = ceil(((($steps - $i) / $steps) * 100) / 2)) {
+-        imagecopymerge($background, $image->res, 0, $image->info['height'] + $i, 0, $image->info['height'] - $i, $image->info['width'], 1, $opacity);
++        imagecopymerge($background, $image->resource, 0, $image->info['height'] + $i, 0, $image->info['height'] - $i, $image->info['width'], 1, $opacity);
+       }
+       $return = true;
+       break;
+     case 'left':
+       $steps = min($options['size'], $image->info['width']);
+       for ($i = 0, $opacity = 50; $i < $steps; ++$i, $opacity = ceil(((($steps - $i) / $steps) * 100) / 2)) {
+-        imagecopymerge($background, $image->res, $x - $i, 0, $i, 0, 1, $image->info['height'], $opacity);
++        imagecopymerge($background, $image->resource, $x - $i, 0, $i, 0, 1, $image->info['height'], $opacity);
+       }
+       $return = true;
+       break;
+     case 'right':
+       $steps = min($options['size'], $image->info['height']);
+       for ($i = 0, $opacity = 50; $i < $steps; ++$i, $opacity = ceil(((($steps - $i) / $steps) * 100) / 2)) {
+-        imagecopymerge($background, $image->res, $image->info['width'] + $i, 0, $image->info['width'] - $i, 0, 1, $image->info['height'], $opacity);
++        imagecopymerge($background, $image->resource, $image->info['width'] + $i, 0, $image->info['width'] - $i, 0, 1, $image->info['height'], $opacity);
+       }
+       $return = true;
+       break;
+   }
+   
+   if ($return) {
+-    imagedestroy($image->res);
+-    $image->res = $background;
++    imagedestroy($image->resource);
++    $image->resource = $background;
+     $image->info['width'] = $width;
+     $image->info['height'] = $height;
+   }
+   else {
+-    imagedestryoy($background);
++    imagedestry($background);
+   }
+   return $return;
+ }

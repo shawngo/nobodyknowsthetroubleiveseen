@@ -1,0 +1,13 @@
+; $Id: content_glider.info,v 1.7 2009/06/24 16:02:10 thenicespider Exp $
+name = "Content Glider"
+description = "Display content and image in Slide show mode using jQuery."
+core = 6.x
+version = "6.x-1.5"
+package = "Easy Module"
+project = "content_glider"
+; Information added by drupal.org packaging script on 2009-06-24
+version = "6.x-1.5"
+core = "6.x"
+project = "content_glider"
+datestamp = "1245859860"
+

@@ -1,0 +1,17 @@
+<?php
+
+
+function webform_themer_form_alter(&$form, &$form_state, $form_id) {
+  if('webform_client_form_1867' == $form_id) {
+    // dpm($form);
+    // drupal_render($form['submitted']['company_information']['zip']);
+  }
+
+}
+
+function webform_theme_registry_alter(&$theme_registry) {
+  //dpm($theme_registry['webform_form']);
+  //$theme_registry['webform_form']['theme paths'][] = drupal_get_path('module', 'webform_themer');
+  //dpm($theme_registry['webform_form']);
+}
+

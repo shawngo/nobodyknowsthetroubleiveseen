@@ -1,0 +1,30 @@
+/* $Id: poll.css,v 1.6 2008/01/22 07:47:57 goba Exp $ */
+
+#question { background: url(../images/bg-poll.gif) 0 0 repeat-y; }
+	#question2 { background: url(../images/bg-poll-header.gif) 0 0 no-repeat; }
+	#question3 { background: url(../images/bg-poll-footer.gif) 0 100% no-repeat; padding: 40px 15px 25px 15px; }
+	#question h2 { display: none; }
+	#question p { line-height: 1.3em; }
+	#question ul { line-height: 1.3em; margin: 0; padding: 0; }
+		#question ul li { background: none; margin: 0; padding: 0; }
+
+.poll .bar { background-color: #dfebf0; height: 20px; margin: 0 0 5px 0; position: relative; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; }
+	.poll .bar .foreground { background-color: #006e91; -webkit-border-top-left-radius: 2px; -webkit-border-bottom-left-radius: 2px; -moz-border-radius-topleft: 2px; -moz-border-radius-bottomleft: 2px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-right: 1px solid #fff; position: absolute; top: 0; left: 0; height: 20px; float: left; /* LTR */ }
+	.poll .bar .percent { color: #0a8ab3; text-shadow: 0 1px 0 #fff; line-height: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 5px; top: 0; }
+.poll .links, 
+.poll .text { text-transform: uppercase; font-size: 10px; color: #666; line-height: 1.3em; margin: 0; padding: 0; }
+.poll .percent { text-align: right; /* LTR */ }
+.poll .total { color: #666; font-style: italic; font-size: 10px; text-align: right; }
+	.poll .total strong { font-style: normal; }
+.poll .vote-form { text-align: center; }
+.poll .vote-form .choices { text-align: left; /* LTR */ margin: 0 auto; display: table; }
+.poll .vote-form .choices .title { font-weight: bold; }
+.node-form #edit-poll-more { margin: 0; }
+td.poll-chtext { width: 80%; }
+td.poll-chvotes .form-text { width: 85%; }
+.poll .form-radios .form-item { padding-left: 16px; text-indent: -16px; }
+#sidebar .poll .form-radios { line-height: 1.3em; margin-bottom: 8px; }
+
+.poll-list { }
+	.poll-list h3 { margin-bottom: 0; }
+	.poll-list .posted-date { color: #666; font-size: 10px; font-style: italic; margin: 0; padding: 0; text-transform: uppercase; }

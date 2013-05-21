@@ -1,0 +1,9 @@
+name = Site Documentation
+description = "Displays various pieces of information about this Drupal installation."
+core = 6.x
+; Information added by drupal.org packaging script on 2012-04-25
+version = "6.x-1.4"
+core = "6.x"
+project = "sitedoc"
+datestamp = "1335320186"
+

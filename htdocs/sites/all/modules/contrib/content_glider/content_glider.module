@@ -1,0 +1,229 @@
+<?php
+// $Id: content_glider.module,v 1.6 2009/06/24 16:02:10 thenicespider Exp $
+
+/**
+ * @file
+ * Display content and image in Slide show mode using jQuery.
+ */
+
+/**
+ * Implementation of hook_help().
+ */
+function content_glider_help($section) {
+  switch ($section) {
+    case 'admin/help#content_glider':
+      $output = "The content_glider module: Display content and image in Slide show mode using jQuery.";
+	return $output;
+    case 'admin/modules#description':
+      return 'The content_glider module: Display content and image in Slide show mode using jQuery.';
+  }
+}
+
+/**
+ * Implementation of hook_perm
+ */
+function content_glider_perm() {
+  return array('access content_glider', 'administer content_glider');
+}
+
+/*
+$items['admin/settings/counter'] = array(
+    'title' => 'Counter settings',
+    'description' => 'Show Site Counter, Client IP, and Unique Visitor.',
+    'access arguments' => array('administer counter'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('counter_admin_settings'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'counter.settings.inc',
+  );
+*/
+  
+function content_glider_menu() {
+
+  $items = array();
+  
+  $items['admin/settings/content_glider'] = array(
+      'title' => 'Content Glider',
+      'description' => t('Setting Content Glider.'),
+      'access arguments' => array('administer content_glider'),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('content_glider_admin_settings'),
+      'type' => MENU_NORMAL_ITEM);
+  
+  return $items;
+}
+
+function content_glider_admin_settings() {
+
+  // only administrators can access this function
+  
+  // Generate the form - settings applying to all patterns first
+  $form['content_glider_settings'] = array(
+    '#type' => 'fieldset',
+    '#weight' => -20,
+    '#title' => t('Basic settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE
+  );
+  $form['content_glider_settings']['content_glider_auto'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Auto rotate contents'),
+	  '#default_value' => variable_get('content_glider_auto', 1),
+    '#description' => t("Display content without mouse click."),           
+    '#maxlength' => '1', '#size' => '1');
+  
+	$form['content_glider_settings']['content_glider_speed'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Glide animation duration (in milliseconds)'),
+	  '#default_value' => variable_get('content_glider_speed', 1000),
+	);
+	$form['content_glider_settings']['content_glider_direction'] = array(
+      '#type' => 'select',
+      '#title' => t('Set direction of glide'),
+	  '#default_value' => variable_get('content_glider_direction', 0),
+	  '#options' => array('up to down', 'down to up', 'left to right', 'right to left'),
+	  '#description' => 'Select the animation direction'
+	);
+	$form['content_glider_settings']['content_glider_count'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Number of contents to glide'),
+	  '#default_value' => variable_get('content_glider_count', 5),
+	);
+	
+	//$output_body .=  'direction: "downup", //set direction of glide: "updown", "downup", "leftright", or "rightleft"'
+	
+	$form['content_glider_source'] = array(
+    '#type' => 'fieldset',
+    '#weight' => -20,
+    '#title' => t('Glider content source (based on Drupal content-type)'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE
+  );
+	$form['content_glider_source']['content_glider_source_1'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Content type for Glider 1'),
+	  '#default_value' => variable_get('content_glider_source_1', 'page'),
+	);
+	$form['content_glider_source']['content_glider_source_2'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Content type for Glider 2'),
+	  '#default_value' => variable_get('content_glider_source_2', ''),
+	);	  
+	$form['content_glider_source']['content_glider_source_3'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Content type for Glider 3'),
+	  '#default_value' => variable_get('content_glider_source_3', ''),
+	);	  	  
+  return system_settings_form($form);
+}
+
+/**
+ * Implementation of hook_block().
+ *
+ */
+function content_glider_block($op = 'list', $delta = 0) {
+  $content_glider_auto  = variable_get("content_glider_auto", 1);  
+  $content_glider_speed = variable_get("content_glider_speed", 1000);  
+  $content_glider_count = variable_get("content_glider_count", 5);
+  
+  $content_glider_direction = variable_get("content_glider_direction", 0); 
+  
+  if ($content_glider_direction==0) { $content_glider_direction_value = 'updown'; }
+  if ($content_glider_direction==1) { $content_glider_direction_value = 'downup'; }
+  if ($content_glider_direction==2) { $content_glider_direction_value = 'leftright'; }
+  if ($content_glider_direction==3) { $content_glider_direction_value = 'rightleft'; }
+  
+  $content_glider_source_1  = variable_get("content_glider_source_1", "page");
+  $content_glider_source_2  = variable_get("content_glider_source_2", "");
+  $content_glider_source_3  = variable_get("content_glider_source_3", "");
+  
+  global $base_url;    
+	$ajax_base_path = $base_url;
+	
+  if ($op == 'list') 
+  {
+    $blocks[0]['info'] = 'Content Glider 1';
+    $blocks[1]['info'] = 'Content Glider 2';
+    $blocks[2]['info'] = 'Content Glider 3';
+	return $blocks;
+  }
+  
+  if ($op == 'view') {
+     
+    switch($delta) {
+    	case 0: $content_type = $content_glider_source_1; break;
+    	case 1: $content_type = $content_glider_source_2; break;
+    	case 2: $content_type = $content_glider_source_3; break;
+   	}
+	
+	  $sql = " SELECT n.nid, n.title, r.teaser FROM {node} n INNER JOIN {node_revisions} r ON n.nid=r.nid "
+	          ." WHERE n.status=1 AND n.type='%s' ORDER BY n.created DESC LIMIT %s";
+    $results = db_query($sql, $content_type, $content_glider_count);
+  
+    if (!db_result($results)) {
+      return;
+		}
+		
+		drupal_add_css(drupal_get_path('module', 'content_glider') . '/featuredcontentglider.css');
+    drupal_add_js(drupal_get_path('module', 'content_glider'). '/featuredcontentglider.js', 'module');
+    drupal_add_js(drupal_get_path('module', 'content_glider'). '/jquery-1.2.2.pack.js', 'module');
+    //Text	
+		$output_head  =''."\n";	
+		$output_head .= '/***********************************************'."\n";
+		$output_head .= '* Featured Content Glider script- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)'."\n";
+		$output_head .= '* Visit http://www.dynamicDrive.com for hundreds of DHTML scripts'."\n";
+		$output_head .= '* This notice must stay intact for legal use'."\n";
+		$output_head .= '***********************************************/'."\n";
+		drupal_add_js($output_head,'inline');	
+	
+		$glider_id = $delta+1;    
+      
+		  $output_body  =  '';
+			$output_body .=  '<script type="text/javascript">'."\n";
+
+			$output_body .=  'featuredcontentglider.init({'."\n";
+			$output_body .=  'gliderid: "Glider'.$glider_id.'", //ID of main glider container'."\n";
+			$output_body .=  'contentclass: "glidecontent", //Shared CSS class name of each glider content'."\n";
+			$output_body .=  'togglerid: "p-select", //ID of toggler container'."\n";
+			$output_body .=  'remotecontent: "", //Get gliding contents from external file on server? "filename" or "" to disable'."\n";
+			$output_body .=  'selected: 0, //Default selected content index (0=1st)'."\n";
+			$output_body .=  'persiststate: false, //Remember last content shown within browser session (true/false)?'."\n";
+			$output_body .=  'speed: '.$content_glider_speed.', //Glide animation duration (in milliseconds)'."\n";
+			$output_body .=  'direction: "'.$content_glider_direction_value.'", //set direction of glide: "updown", "downup", "leftright", or "rightleft"'."\n";
+			if ($content_glider_auto) { $auto="true"; } else { $auto="false"; }
+			$output_body .=  'autorotate: '.$auto.', //Auto rotate contents (true/false)?'."\n";
+			$output_body .=  'autorotateconfig: [3000, 2] //if auto rotate enabled, set [milliseconds_btw_rotations, cycles_before_stopping]'."\n";
+			$output_body .=  '})'."\n";
+
+			$output_body .=  '</script>';
+		  
+			$output_body .=  '<div id="Glider'.$glider_id.'" class="glidecontentwrapper">';
+			
+      $results = db_query($sql, $content_type, $content_glider_count);
+      while ($data = db_fetch_object($results)) {
+        if ($data->teaser != '') {
+          $glider_nid = $data->nid;
+          $output_body .= '<div class="glidecontent">';
+			    $output_body .= "<a href='".url("node/$glider_nid")."'>".$data->teaser ."</a>";
+			    $output_body .= '</div>';
+			  }
+      }
+			$output_body .= '</div>';
+
+			$output_body .=  '<div id="p-select" class="glidecontenttoggler">';
+			$output_body .=  '<a href="#" class="prev">Prev</a>';
+			$output_body .=  '<a href="#" class="toc">1</a> <a href="#" class="toc">2</a> <a href="#" class="toc">3</a>';
+			$output_body .=  '<a href="#" class="toc">4</a> <a href="#" class="toc">5</a> ';
+			$output_body .=  '<a href="#" class="next">Next</a>';
+			$output_body .=  '</div>';
+			  
+		  $block['subject'] = "Content Glider $glider_id"; 
+      $block['content'] = $output_body;  
+				
+     
+    return $block;
+  }
+}
+
+
+?>
